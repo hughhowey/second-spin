@@ -64,7 +64,7 @@ jobs:
           name: mac-build
           path: |
             flutter/dist/*.dmg
-            flutter/dist/*-mac.zip
+            flutter/dist/*.zip
             flutter/dist/latest-mac.yml
             flutter/dist/*.blockmap
       - name: Publish the release
@@ -74,4 +74,4 @@ jobs:
           TAG="v0.1.${{ github.run_number }}"
           gh release create "$TAG" --target "$GITHUB_SHA" --title "Wow and Flutter $TAG" \
             --notes "Built from commit ${GITHUB_SHA::7}. Signed: $SIGNED." \
-            dist/*.dmg dist/*-mac.zip dist/latest-mac.yml dist/*.blockmap
+            dist/*.dmg dist/*.zip dist/latest-mac.yml dist/*.blockmap
