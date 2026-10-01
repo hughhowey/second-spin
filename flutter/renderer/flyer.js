@@ -36,76 +36,88 @@ function thumb(kind, skin) {
   return `<svg viewBox="0 0 300 96">${defs}${plate}${body}</svg>`;
 }
 
-// ---------- what the shop sells ----------
-const SECTIONS = [
-  { title: 'Receivers &amp; Amplifiers', items: [
-    { unit: 'amp', name: 'Integrated Stereo Amplifier', model: 'A-9', kind: 'amp', bullets: ['Input selector: phono, tuner, CD, tape, aux', 'Bass, treble, balance and loudness', 'Pure direct, no tone controls in the path'], used: 30, nw: 95, yr: ['1978', '1991'] },
-    { unit: 'power', name: 'Stereo Power Amplifier', model: 'M-200', kind: 'power', bullets: ['100 watts per channel', 'Two big backlit VU meters', 'Peak indicator'], used: 45, nw: 140, yr: ['1977', '1990'] }
-  ] },
-  { title: 'Tape &amp; Discs', items: [
-    { unit: 'deck', name: 'Stereo Cassette Deck', model: 'TD-720', kind: 'deck', bullets: ['Auto reverse, Side A then Side B', 'HX Pro headroom extension', 'Record off the dial, only full songs'], used: 24, nw: 75, yr: ['1980', '1989'] },
-    { unit: 'cd', name: '6-Disc CD Changer', model: 'CD-6', kind: 'cd', bullets: ['Six albums loaded at once', 'INTRO plays 10 seconds of every track', 'Program your own track order'], used: 40, nw: 110, yr: ['1989', '1993'] },
-    { unit: 'reel', name: 'Open Reel Tape Deck', model: 'RR-7', kind: 'reel', bullets: ['Three motors, 7.5 and 15 ips', 'Big silver reels, 10.5 inch', 'For the really old songs'], used: 220, nw: null, yr: ['1971', null] }
-  ] },
-  { title: 'Tuners &amp; Equalizers', items: [
-    { unit: 'eq', name: 'Graphic Equalizer / Analyzer', model: 'EQ-10', kind: 'eq', bullets: ['Ten sliders, 31 Hz to 16 kHz', 'Spectrum analyzer with peak hold', 'Flat, Rock and Vocal presets'], used: 18, nw: 55, yr: ['1979', '1990'] }
-  ] },
-  { title: 'Arriving Soon', soon: true, items: [
-    { unit: 'turntable', name: 'Belt-Drive Turntable', model: 'TT-3', kind: 'turntable', bullets: ['For vinyl, the oldest records'], soon: true },
-    { unit: 'minidisc', name: 'MiniDisc Recorder', model: 'MD-74', kind: 'minidisc', bullets: ['One 74-minute disc per year', 'Title it letter by letter'], soon: true },
-    { unit: 'carousel', name: '100-Disc Carousel', model: 'CD-100', kind: 'carousel', bullets: ['A hundred albums, one shelf'], soon: true }
-  ] }
+// ---------- what the shop sells (prices end in .99, like a real flyer) ----------
+const CATALOG = {
+  amp:   { name: 'Integrated Stereo Amplifier', model: 'A-9', kind: 'amp', bullets: ['Input selector: phono, tuner, CD, tape, aux', 'Bass, treble, balance and loudness', 'Pure direct: no tone controls in the path'], used: 29.99, nw: 94.99, yr: ['1978', '1991'] },
+  power: { name: 'Stereo Power Amplifier', model: 'M-200', kind: 'power', bullets: ['100 watts per channel', 'Two big backlit VU meters', 'Peak indicator'], used: 44.99, nw: 139.99, yr: ['1977', '1990'] },
+  deck:  { name: 'Stereo Cassette Deck', model: 'TD-720', kind: 'deck', bullets: ['Auto reverse: Side A, then Side B', 'HX Pro headroom extension', 'Record off the dial, full songs only'], used: 23.99, nw: 74.99, yr: ['1980', '1989'] },
+  cd:    { name: '6-Disc CD Changer', model: 'CD-6', kind: 'cd', bullets: ['Six albums loaded at once', 'INTRO plays 10 seconds of every track', 'Program your own track order'], used: 39.99, nw: 109.99, yr: ['1989', '1993'] },
+  reel:  { name: 'Open Reel Tape Recorder', model: 'RR-7', kind: 'reel', bullets: ['Three motors, 7.5 and 15 ips', 'Big silver 10½-inch reels', 'Wow and flutter less than 0.04%', 'Plays the really old songs', 'Handles to carry it, if you dare'], used: 219.99, nw: null, yr: ['1971', null] },
+  eq:    { name: 'Graphic Equalizer / Analyzer', model: 'EQ-10', kind: 'eq', bullets: ['Ten sliders, 31 Hz to 16 kHz', 'Spectrum analyzer with peak hold', 'Flat, Rock and Vocal presets'], used: 17.99, nw: 54.99, yr: ['1979', '1990'] }
+};
+const SOON = [
+  { name: 'Belt-Drive Turntable', model: 'TT-3', kind: 'turntable', bullets: ['For vinyl, the oldest records'] },
+  { name: 'MiniDisc Recorder', model: 'MD-74', kind: 'minidisc', bullets: ['One 74-minute disc per year', 'Title it letter by letter'] },
+  { name: '100-Disc Carousel', model: 'CD-100', kind: 'carousel', bullets: ['A hundred albums, one shelf'] }
 ];
-const money = (n) => Math.round(n);
-const listPrice = (p) => Math.round(p * 1.35 / 5) * 5 || 5;
+const dollars = n => Math.floor(n + 1e-9), cents = n => String(Math.round((n - Math.floor(n + 1e-9)) * 100)).padStart(2, '0');
+const priceHTML = n => `<span class="price"><sup>$</sup>${dollars(n)}<sup>${cents(n)}</sup></span>`;
+const reg = p => Math.max(p + 5, Math.round(p * 1.35 / 5) * 5) - 0.01;
+const SECTION_NAME = {};
 
-function flyerTile(it, tier) {
-  const price = tier === 'used' ? it.used : it.nw;
-  const skin = tier === 'used' ? 'silver' : 'black';
-  const owned = game.owned[it.unit];
-  const tradeIn = tier === 'new' && owned === 'used' ? Math.round(it.used * 0.5) : 0;
-  const net = Math.max(0, price - tradeIn);
-  let action;
-  if (owned === tier) action = `<button class="buy" disabled>In your rack ✓</button>`;
-  else if (tier === 'used' && owned === 'new') action = `<button class="buy" disabled>Have the new one</button>`;
-  else if (game.cash >= net) action = `<button class="buy" data-unit="${it.unit}" data-tier="${tier}" data-net="${net}">Buy now</button>`;
-  else action = `<button class="buy" disabled>Need $${(net - game.cash).toFixed(2)} more</button>`;
-  return `<div class="item"><span class="tier">${tier === 'used' ? 'USED · ' + it.yr[0] : 'NEW · ' + it.yr[1]}</span>
-    ${price > 40 ? `<div class="burst">SAVE<br>$${listPrice(price) - price}</div>` : ''}
-    <div class="pic">${thumb(it.kind, skin)}</div>
-    <h4>${it.name}</h4><div class="mdl">Model ${it.model}</div>
+function newState(it, unit) {
+  const owned = game.owned[unit], trade = owned === 'used' ? Math.round(it.used * 0.5) : 0, net = Math.round((it.nw - trade) * 100) / 100;
+  if (owned === 'new') return { net, html: `<button class="buy" disabled>In your rack ✓</button>`, trade };
+  if (game.cash + 1e-9 >= net) return { net, trade, html: `<button class="buy" data-unit="${unit}" data-tier="new" data-net="${net}">Buy now</button>` };
+  return { net, trade, html: `<button class="buy" disabled>Need $${(net - game.cash).toFixed(2)} more</button>` };
+}
+function usedState(it, unit) {
+  const owned = game.owned[unit];
+  if (owned === 'used') return `<button class="buy small" disabled>In your rack ✓</button>`;
+  if (owned === 'new') return `<button class="buy small" disabled>Have the new one</button>`;
+  if (game.cash + 1e-9 >= it.used) return `<button class="buy small" data-unit="${unit}" data-tier="used" data-net="${it.used}">Buy used</button>`;
+  return `<button class="buy small" disabled>Need $${(it.used - game.cash).toFixed(2)} more</button>`;
+}
+function unitTile(unit, span) {
+  const it = CATALOG[unit], st = newState(it, unit);
+  return `<div class="item span${span}"><span class="tier new">NEW!</span><div class="burst">PRICE<br>BREAK!<br><b>SAVE $${Math.round(reg(it.nw) - it.nw)}</b></div>
+    <div class="pic">${thumb(it.kind, 'black')}</div>
+    <h4>${it.name}</h4><div class="mdl">Model ${it.model} · ${it.yr[1]}</div>
     <ul>${it.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
-    ${tradeIn ? `<div class="was">Trade in your used one: −$${tradeIn}</div>` : ''}
-    <div class="row2"><div><div class="was">Reg. $${listPrice(price)}</div><div class="price"><sup>$</sup>${net}<sup>00</sup></div></div>${action}</div></div>`;
+    <div class="row2"><div><div class="was">Reg. $${reg(it.nw).toFixed(2)}</div>${priceHTML(st.net)}${st.trade ? `<div class="was">after $${st.trade} trade-in</div>` : ''}</div>${st.html}</div>
+    <div class="usedstrip"><div class="mini">${thumb(it.kind, 'silver')}</div><div><b>Or buy it used, ${it.yr[0]}</b><span>Tested and working. Trade it in later for half.</span></div>${priceHTML(it.used)}${usedState(it, unit)}</div></div>`;
+}
+function reelPanel() {
+  const it = CATALOG.reel, owned = game.owned.reel === 'used', afford = game.cash + 1e-9 >= it.used;
+  const btn = owned ? `<button class="buy" disabled>In your rack ✓</button>` : afford ? `<button class="buy" data-unit="reel" data-tier="used" data-net="${it.used}">Buy now</button>` : `<button class="buy" disabled>Need $${(it.used - game.cash).toFixed(2)} more</button>`;
+  return `<div class="item span6 vintage"><div class="heat">Here's a <b>HEATWAVE</b> of bargains!</div>
+    <div class="vbody"><div class="pic">${thumb('reel', 'silver')}</div>
+    <div class="vtext"><div class="newtag">New!</div><h4>${it.name} that has everything!</h4><div class="mdl">Model ${it.model} · Reel and Mike Included</div>
+    <div class="chk">Check these features:</div><ul>${it.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>
+    <div class="vprice"><div class="was">at a price that's almost nothing!</div>${priceHTML(it.used)}${btn}</div></div></div>`;
 }
 function soonTile(it) {
-  return `<div class="item soon"><span class="tier">ARRIVING SOON</span><div class="pic">${thumb(it.kind, 'black')}</div>
+  return `<div class="item span2 soon"><span class="tier">ARRIVING SOON</span><div class="pic">${thumb(it.kind, 'black')}</div>
     <h4>${it.name}</h4><div class="mdl">Model ${it.model}</div><ul>${it.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
     <div class="row2"><div class="was">Not on the shelf yet</div><button class="buy" disabled>On order</button></div></div>`;
 }
 function renderFlyer() {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], d = new Date();
-  let html = `<header class="mast"><div class="logo">W&amp;F<small>STEREO CENTER</small></div>
-    <div class="dateline">Sunday circular<b>Build your stack, one component at a time</b>Layaway available on every component</div></header>
-    <div class="banner">★ Hi-Fi Stereo Sale ★ Prices earned by listening ★ Every song, all the way through ★</div>`;
-  SECTIONS.forEach(sec => {
-    html += `<div class="sect"><span>${sec.title}</span></div><div class="fgrid">`;
-    sec.items.forEach(it => {
-      if (sec.soon) html += soonTile(it);
-      else { html += flyerTile(it, 'used'); if (it.nw) html += flyerTile(it, 'new'); }
-    });
-    html += '</div>';
-  });
-  html += `<div class="fine">Prices good this week only. Quantities limited, no rain checks. Used items are previously enjoyed, tested and working. Trade in a used component toward the new one for half what you paid. Items may not be exactly as shown. Not responsible for typographical errors. ${days[d.getDay()]}. W&amp;F Stereo Center is a made-up store.</div>`;
-  const paper = $('#paper'); const top = $('#flyer').scrollTop;
-  paper.innerHTML = html; $('#flyer').scrollTop = top;
+  let h = `<header class="mast"><div class="logo">W&amp;F<small>STEREO CENTER</small></div>
+    <div class="dateline">Sunday circular<b>Where listening is state of the art!</b>Layaway on every component</div></header>
+    <div class="banner">Hi-Fi Stereo Sale ★ prices earned by listening ★ every song, all the way through</div>
+    <div class="band red">Receivers &amp; Amplifiers</div>
+    <div class="fgrid">${unitTile('amp', 3)}${unitTile('power', 3)}</div>
+    <div class="band blue">Tape &amp; Discs · The sound of the 80s and 90s</div>
+    <div class="fgrid">${unitTile('deck', 3)}${unitTile('cd', 3)}</div>
+    <div class="band red">Tuners &amp; Equalizers</div>
+    <div class="fgrid">${unitTile('eq', 3)}
+      <div class="item span3 promo"><div class="stamp">LAYAWAY</div><p>Put a little down every day.</p><p class="big">Take it home when it's yours.</p>
+      <div class="coupon">CLIP &amp; SAVE<br>Trade in your used component toward the new one and we'll give you half of what you paid.</div></div></div>
+    <div class="band blue">Open Reel · For the really old songs</div>
+    <div class="fgrid">${reelPanel()}</div>
+    <div class="band red">Arriving soon</div>
+    <div class="fgrid">${SOON.map(soonTile).join('')}</div>
+    <div class="foot"><div class="hours"><b>Store hours</b>Mon–Sat 10a–8:30p<br>Sun 12p–6p<br>Open every day you feel like listening</div>
+      <div class="seal"><span>Low price<br>guarantee</span></div>
+      <div class="fine">Prices good this week only. Quantities limited, no rain checks. Used items are previously enjoyed, tested and working. Items may not be exactly as shown. Not responsible for typographical errors. W&amp;F Stereo Center is a made-up store.</div></div>`;
+  const paper = $('#paper'), top = $('#flyer').scrollTop;
+  paper.innerHTML = h; $('#flyer').scrollTop = top;
   $$('.buy[data-unit]', paper).forEach(b => b.addEventListener('click', () => buy(b.dataset.unit, b.dataset.tier, Number(b.dataset.net))));
 }
 function buy(unit, tier, net) {
-  if (game.cash < net) return;
-  game.cash -= net; game.owned[unit] = tier; saveGame(); showCash(); renderRack(); renderFlyer();
-  const name = SECTIONS.flatMap(s => s.items).find(i => i.unit === unit).name;
-  note(`Delivered: ${name}. It's in the rack.`); flash(`−$${net}`);
+  if (game.cash + 1e-9 < net) return;
+  game.cash = Math.max(0, game.cash - net); game.owned[unit] = tier; saveGame(); showCash(); renderRack(); renderFlyer();
+  note(`Delivered: ${CATALOG[unit].name}. It's in the rack.`); flash(`−$${net.toFixed(2)}`);
 }
 function openFlyer(open) {
   const f = $('#flyer'); f.hidden = !open;
