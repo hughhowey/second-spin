@@ -2,6 +2,7 @@
 // Mac, so you can swipe to it and away), keeps itself current from GitHub
 // releases the way NEO does, and hands a few facts to the page.
 const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
@@ -74,6 +75,67 @@ function lookForUpdate() {
 ipcMain.handle('wf:version', () => app.getVersion());
 ipcMain.handle('wf:update-state', () => ({ ...upd }));
 ipcMain.handle('wf:install-update', () => { if (updaterReady && updater) updater.quitAndInstall(); });
+
+
+// ---- saved game: wallet, rack, play counts (a small JSON file in the user's data folder)
+const saveFile = () => path.join(app.getPath('userData'), 'save.json');
+ipcMain.handle('wf:load-save', () => { try { return JSON.parse(fs.readFileSync(saveFile(), 'utf8')); } catch { return null; } });
+ipcMain.handle('wf:write-save', (_e, obj) => {
+  try { const tmp = saveFile() + '.tmp'; fs.writeFileSync(tmp, JSON.stringify(obj)); fs.renameSync(tmp, saveFile()); return true; } catch { return false; }
+});
+
+// ---- the Spotify app on this Mac, driven with AppleScript (no web login needed to play)
+const D = '|||';
+const STATE_SCRIPT = `
+if application "Spotify" is running then
+  tell application "Spotify"
+    set st to (player state as string)
+    if st is "stopped" then return "stopped"
+    set t to current track
+    set art to ""
+    try
+      set art to artwork url of t
+    end try
+    set d to "${D}"
+    return st & d & (name of t) & d & (artist of t) & d & (album of t) & d & ((duration of t) as string) & d & ((player position) as string) & d & (spotify url of t) & d & ((track number of t) as string) & d & art
+  end tell
+else
+  return "notrunning"
+end if`;
+function osa(script) {
+  return new Promise((resolve, reject) => {
+    execFile('/usr/bin/osascript', ['-e', script], { timeout: 5000 }, (err, out, errout) => err ? reject(new Error((errout || err.message).trim())) : resolve(String(out).trim()));
+  });
+}
+const num = (s) => Number(String(s).replace(',', '.')) || 0;
+ipcMain.handle('wf:spotify', async (_e, cmd, arg) => {
+  if (process.platform !== 'darwin') return { error: 'The Spotify bridge only works on a Mac.' };
+  try {
+    switch (cmd) {
+      case 'state': {
+        const out = await osa(STATE_SCRIPT);
+        if (out === 'notrunning' || out === 'stopped') return { state: out };
+        const [state, title, artist, album, dur, pos, uri, trackNo, art] = out.split(D);
+        return { state, title, artist, album, durMs: num(dur), pos: num(pos), uri, trackNo: num(trackNo), art: art || '' };
+      }
+      case 'playpause': await osa('tell application "Spotify" to playpause'); return { ok: true };
+      case 'pause': await osa('tell application "Spotify" to pause'); return { ok: true };
+      case 'next': await osa('tell application "Spotify" to next track'); return { ok: true };
+      case 'previous': await osa('tell application "Spotify" to previous track'); return { ok: true };
+      case 'seek': await osa(`tell application "Spotify" to set player position to ${num(arg)}`); return { ok: true };
+      case 'play': {
+        if (arg == null) { await osa('tell application "Spotify" to play'); return { ok: true }; }
+        if (!/^spotify:(track|album|playlist|artist):[A-Za-z0-9]+$/.test(String(arg))) return { error: 'Not a Spotify link.' };
+        await osa(`tell application "Spotify" to play track "${arg}"`); return { ok: true };
+      }
+      default: return { error: 'Unknown command.' };
+    }
+  } catch (e) {
+    const msg = String(e.message || e);
+    if (/not allowed|-1743/.test(msg)) return { error: 'permission', detail: 'Allow Wow and Flutter to control Spotify in System Settings > Privacy & Security > Automation.' };
+    return { error: msg };
+  }
+});
 
 app.whenReady().then(() => {
   buildMenu(); createWindow();

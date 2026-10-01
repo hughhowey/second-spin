@@ -5,13 +5,15 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const NS = 'http://www.w3.org/2000/svg';
 
+const hasWF = !!window.wf;
+let game = { cash: 0, owned: { tuner: 'new' }, plays: {} };
 let powered = true, listening = false, band = 91.5, vol = 0.55, cash = 0, loud = false, pure = false;
 const note = t => { $('#note').textContent = t; };
 
 // ---------- scaling: the rack fills the window side to side ----------
 function fit() {
   const z = Math.max(0.55, (innerWidth - 56) / 1100);
-  ['#rack', '#rear', '.shop'].forEach(s => { $(s).style.zoom = z; });
+  ['#rack', '#rear'].forEach(s => { $(s).style.zoom = z; });
   drawDial(); drawSpectrumFrame();
 }
 function fitCanvas(cv) {
@@ -79,22 +81,27 @@ const vus = [
 // ---------- cassette and reels ----------
 function buildCassette() {
   const d = $('#door');
-  d.innerHTML = `<svg viewBox="0 0 306 102">
-  <defs><linearGradient id="cb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3632"/><stop offset="1" stop-color="#1c1a18"/></linearGradient>
-  <linearGradient id="cl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#efe2bd"/><stop offset="1" stop-color="#e4d4a8"/></linearGradient></defs>
-  <rect width="306" height="102" rx="7" fill="url(#cb)" stroke="#000"/>
-  <rect x="14" y="7" width="278" height="56" rx="3" fill="url(#cl)"/>
-  <rect x="14" y="7" width="278" height="12" rx="3" fill="#c9302c"/>
-  <text x="22" y="17" font-family="Barlow Condensed" font-weight="800" font-size="10" letter-spacing="2" fill="#fff">A</text>
-  <text x="22" y="46" font-family="Reenie Beanie" font-size="25" fill="#1d3c8f">Mix, 1992</text><text x="232" y="46" font-family="Reenie Beanie" font-size="21" fill="#1d3c8f">don't lose it</text>
-  <g stroke="rgba(80,110,165,.35)"><line x1="22" y1="54" x2="284" y2="54"/><line x1="22" y1="46" x2="284" y2="46"/></g>
-  <rect x="96" y="21" width="114" height="30" rx="15" fill="#0b0907" stroke="#000" stroke-width="2"/>
-  <circle id="packL" cx="124" cy="36" r="13" fill="#3a2314"/><circle id="packR" cx="182" cy="36" r="13" fill="#3a2314"/>
-  <g class="hub" id="hubL"><circle cx="124" cy="36" r="9" fill="#e9e9ec"/><circle cx="124" cy="36" r="4.5" fill="#222"/>${[0,60,120,180,240,300].map(a=>`<rect x="122.6" y="26.5" width="2.8" height="5" fill="#222" transform="rotate(${a} 124 36)"/>`).join('')}</g>
-  <g class="hub" id="hubR"><circle cx="182" cy="36" r="9" fill="#e9e9ec"/><circle cx="182" cy="36" r="4.5" fill="#222"/>${[0,60,120,180,240,300].map(a=>`<rect x="180.6" y="26.5" width="2.8" height="5" fill="#222" transform="rotate(${a} 182 36)"/>`).join('')}</g>
-  <path d="M58 70 H248 L262 100 H44 Z" fill="#2a2724" stroke="#000"/>
-  <circle cx="92" cy="86" r="6" fill="#0b0907"/><circle cx="214" cy="86" r="6" fill="#0b0907"/><rect x="140" y="80" width="26" height="14" rx="2" fill="#0b0907"/>
-  <circle cx="14" cy="92" r="4" fill="#77797e"/><circle cx="292" cy="92" r="4" fill="#77797e"/><circle cx="14" cy="10" r="3" fill="#77797e"/><circle cx="292" cy="10" r="3" fill="#77797e"/>
+  const teeth = (cx, cy) => [0, 60, 120, 180, 240, 300].map(a => `<rect x="${cx - 1.4}" y="${cy - 10.5}" width="2.8" height="5.5" fill="#222" transform="rotate(${a} ${cx} ${cy})"/>`).join('');
+  d.innerHTML = `<svg viewBox="0 0 314 200" preserveAspectRatio="xMidYMid meet">
+  <defs><linearGradient id="cb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3733"/><stop offset="1" stop-color="#1b1917"/></linearGradient>
+  <linearGradient id="cl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f1e5c2"/><stop offset="1" stop-color="#e3d3a6"/></linearGradient>
+  <linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#171412"/><stop offset="1" stop-color="#0a0908"/></linearGradient></defs>
+  <rect width="314" height="200" rx="9" fill="url(#cb)" stroke="#000" stroke-width="2"/>
+  <rect x="20" y="13" width="274" height="124" rx="4" fill="url(#cl)"/>
+  <rect x="20" y="13" width="274" height="22" rx="4" fill="#c9302c"/>
+  <text x="30" y="30" font-family="Barlow Condensed" font-weight="800" font-size="15" letter-spacing="3" fill="#fff">A</text>
+  <text x="266" y="30" font-family="Barlow Condensed" font-weight="800" font-size="12" letter-spacing="2" fill="#fff" text-anchor="end">C-90</text>
+  <text id="lblTitle" x="34" y="62" font-family="Reenie Beanie" font-size="30" fill="#1d3c8f">Mix, 1992</text>
+  <text id="lblArtist" x="34" y="84" font-family="Reenie Beanie" font-size="22" fill="#1d3c8f" fill-opacity=".8">don't lose this one</text>
+  <g stroke="rgba(80,110,165,.4)"><line x1="30" y1="68" x2="284" y2="68"/><line x1="30" y1="90" x2="284" y2="90"/></g>
+  <rect x="94" y="94" width="126" height="40" rx="20" fill="url(#cw)" stroke="#000" stroke-width="2"/>
+  <circle id="packL" cx="125" cy="114" r="14" fill="#3a2314"/><circle id="packR" cx="189" cy="114" r="14" fill="#3a2314"/>
+  <g class="hub"><circle cx="125" cy="114" r="10" fill="#ececef"/><circle cx="125" cy="114" r="5" fill="#222"/>${teeth(125, 114)}</g>
+  <g class="hub"><circle cx="189" cy="114" r="10" fill="#ececef"/><circle cx="189" cy="114" r="5" fill="#222"/>${teeth(189, 114)}</g>
+  <path d="M60 148 H254 L272 193 H42 Z" fill="#2a2724" stroke="#000" stroke-width="1.5"/>
+  <circle cx="90" cy="172" r="8" fill="#0a0908"/><circle cx="224" cy="172" r="8" fill="#0a0908"/><rect x="140" y="162" width="34" height="22" rx="2" fill="#0a0908"/>
+  <circle cx="12" cy="12" r="4.5" fill="#7a7c81"/><circle cx="302" cy="12" r="4.5" fill="#7a7c81"/><circle cx="12" cy="188" r="4.5" fill="#7a7c81"/><circle cx="302" cy="188" r="4.5" fill="#7a7c81"/>
+  <circle cx="157" cy="146" r="4" fill="#7a7c81"/>
   </svg>`;
 }
 function buildReel(host) {
@@ -242,13 +249,18 @@ function deckRun(run) {
     tapeT++;
     $('#dcount').textContent = `${Math.floor(tapeT / 60)}:${String(tapeT % 60).padStart(2, '0')}`;
     const p = clamp(tapeT / 2700, 0, 1);
-    $('#packL').setAttribute('r', 13 + (1 - p) * 4); $('#packR').setAttribute('r', 13 + p * 4);
+    $('#packL').setAttribute('r', 13 + (1 - p) * 6); $('#packR').setAttribute('r', 13 + p * 6);
   }, 1000);
   $('#dside').textContent = run ? 'Deck A · Play' : 'Deck A · Stop';
 }
 [['◀◀', 'rew'], ['▶', 'play'], ['▶▶', 'ff'], ['■', 'stop'], ['●', 'rec'], ['❚❚', 'pause']].forEach(([g, id]) => {
   const b = el('button', 'btn' + (id === 'rec' ? ' rec' : ''), g); b.dataset.id = id; $('#transport').appendChild(b);
   b.addEventListener('click', () => {
+    if (hasWF && id !== 'rec') {
+      const cmd = { play: 'play', stop: 'pause', pause: 'pause', rew: 'previous', ff: 'next' }[id];
+      window.wf.spotify(cmd).then(r => { if (r && r.error) note(r.detail || r.error); pollSpotify(); });
+      return;
+    }
     if (id === 'play') deckRun(true);
     else if (id === 'stop' || id === 'pause') deckRun(false);
     else if (id === 'rew') { tapeT = 0; deckRun(false); $('#dcount').textContent = '0:00'; $('#dside').textContent = 'Deck A · Rewound'; }
@@ -268,7 +280,8 @@ $('#intro').addEventListener('click', () => {
   const iv = setInterval(() => { $('#cdisp').textContent = `D1 T${String(t).padStart(2, '0')}`; $('#csub').textContent = 'Intro · 10 sec per track'; if (++t > 3) { clearInterval(iv); $('#intro').classList.remove('on'); note('INTRO plays three tracks, ten seconds each. Three songs before the album.'); } }, 1200);
 });
 $('#program').addEventListener('click', e => { e.currentTarget.classList.toggle('on'); note('Program: you choose the track order.'); });
-$('#cdplay').addEventListener('click', () => note('Load an album first. Your shelf comes next.'));
+$('#cdplay').addEventListener('click', () => { if (hasWF) window.wf.spotify('play').then(pollSpotify); else note('Load an album first. Your shelf comes next.'); });
+$('#cdstop').addEventListener('click', () => { if (hasWF) window.wf.spotify('pause').then(pollSpotify); });
 
 // ---------- amplifier ----------
 let src = 'TUNER';
@@ -304,7 +317,7 @@ setInterval(() => {
   vus[0](nl); vus[1](nr); vus[2](nl2); vus[3](nr2);
   $('#peak').style.background = nl > 0.82 || nr > 0.82 ? '#ff3b2a' : '#3a0d08';
 }, 70);
-setInterval(() => { if (powered && listening) { cash += 0.01; $('#cash').textContent = '$' + cash.toFixed(2); } }, 1000);
+setInterval(() => { if (!hasWF && powered && listening) { game.cash += 0.01; showCash(); saveGame(); } }, 1000);
 $('#listen').addEventListener('click', e => {
   audio(); listening = !listening; e.currentTarget.classList.toggle('down', listening); deckRun(listening);
   note(listening ? 'Simulated listening: a cent a second. In the real app it pays only on confirmed full songs; whole albums pay more; repeats pay most.' : 'Stopped.');
@@ -313,15 +326,6 @@ $('#flip').addEventListener('click', e => {
   const back = $('#rear').style.display === 'block';
   $('#rear').style.display = back ? 'none' : 'block'; $('#rack').style.display = back ? 'block' : 'none';
   e.currentTarget.textContent = back ? 'Turn rack around' : 'Turn it back'; fit();
-});
-
-// ---------- the shelf ----------
-[['Turntable, belt drive', 'used · 1978 · wood base', 45, 'Plays your oldest records.'], ['Dual cassette deck', 'used · 1988 · auto reverse', 120, 'Deck B records off the dial.'],
- ['MiniDisc deck', 'new · 1996 · ATRAC', 260, 'One 74-minute disc per year.'], ['5-disc CD changer', 'new · 1992', 180, 'Five albums, edge to edge.'],
- ['Reel-to-reel', 'used · 1971 · 7.5 ips', 400, 'For the really old songs.'], ['100-disc carousel', 'new · 1994 · layaway', 650, 'The big one.']].forEach(g => {
-  const d = el('div', 'tag', `<b>${g[0]}</b><span>${g[1]}</span><span>${g[3]}</span><em>$${g[2]}</em><button>SAVE UP</button>`);
-  $('button', d).addEventListener('click', e => { e.currentTarget.textContent = cash >= g[2] ? 'SOLD (MOCKUP)' : 'NEED $' + (g[2] - cash).toFixed(2) + ' MORE'; });
-  $('#shelf').appendChild(d);
 });
 
 // ---------- updates (the desktop app only) ----------
@@ -336,5 +340,3 @@ if (window.wf) {
   window.wf.version().then(v => { $('#bar h1 small').textContent = 'STEREO MEMORY SYSTEM · v' + v; });
 }
 
-fit(); tune(band); addEventListener('resize', fit);
-document.fonts && document.fonts.ready.then(() => { drawDial(); drawSpectrum(); });

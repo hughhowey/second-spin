@@ -8,15 +8,17 @@
 <div id="room"></div><div class="neon"></div>
 <div id="bar">
   <h1>W&amp;F<small>STEREO MEMORY SYSTEM</small></h1>
+  <div id="now"></div>
   <div id="wallet"><span id="cash">$0.00</span><small>EARNED BY LISTENING</small></div>
   <button class="btn" id="listen">▶ Listen (sim)</button>
+  <button class="btn" id="flyerbtn">Sunday flyer</button>
   <button class="btn" id="flip">Turn rack around</button>
 </div>
 
 <main id="viewport">
 <div id="rack">
 
-  <!-- 1 TUNER -->
+  <div class="u" data-unit="tuner"><!-- 1 TUNER -->
   <div class="unit" style="height:150px">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:80deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">TX-410 · Synthesized FM/AM Tuner</span>
@@ -28,9 +30,8 @@
     </div>
     <div class="col"><div class="knob" id="tuneknob" style="--s:62px"></div><span class="print" style="font-size:9px">Tuning</span></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 2 EQ -->
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="eq"><!-- 2 EQ -->
   <div class="unit" style="height:190px">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:100deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">EQ-10 · Graphic Equalizer / Spectrum Analyzer</span>
@@ -38,10 +39,9 @@
     <div class="window grow" id="analyzer"><canvas id="spcv"></canvas></div>
     <div class="col"><button class="btn led" id="flat">Flat</button><button class="btn led" id="rock">Rock</button><button class="btn led" id="vocal">Vocal</button></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 3 CASSETTE DECK -->
-  <div class="unit" id="deckunit" style="height:200px">
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="deck"><!-- 3 CASSETTE DECK -->
+  <div class="unit" id="deckunit" style="height:300px">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:10deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">TD-720 · Stereo Cassette Deck · Auto Reverse · HX Pro</span>
     <div class="col" style="align-self:flex-start;margin-top:10px"><button class="btn sq" aria-label="Power">⏻</button><span class="print" style="font-size:9px">Power</span><button class="btn sq" style="margin-top:6px">⏏</button></div>
@@ -52,9 +52,8 @@
     </div>
     <div class="col"><div class="knob" id="reclvl" style="--s:46px"></div><span class="print" style="font-size:9px">Rec level</span></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 4 CD CHANGER -->
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="cd"><!-- 4 CD CHANGER -->
   <div class="unit" style="height:170px">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:60deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">CD-6 · 6 Disc Changer · Intro / Program</span>
@@ -62,9 +61,8 @@
     <div class="vfd grow"><div class="ghost" id="cghost">D8 T88  88:88</div><div class="lit" id="cdisp">D– T––</div><small id="csub">No disc</small></div>
     <div class="col"><div class="row"><button class="btn" id="cdplay">▶</button><button class="btn" id="cdstop">■</button></div><div class="row"><button class="btn led" id="intro">Intro</button><button class="btn led" id="program">Program</button></div></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 5 AMPLIFIER -->
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="amp"><!-- 5 AMPLIFIER -->
   <div class="unit" style="height:200px">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:75deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">A-9 · Integrated Stereo Amplifier</span>
@@ -80,9 +78,8 @@
     <div class="vfd" style="width:150px;min-width:150px"><div class="lit" id="adisp" style="font-size:15px">TUNER</div><small id="avol">Volume −24 dB</small></div>
     <div class="col" style="position:relative"><svg id="volticks" width="150" height="150" style="position:absolute;left:-23px;top:-23px;pointer-events:none"></svg><div class="knob" id="vol" style="--s:104px"></div><span class="print" style="font-size:9px;margin-top:14px">Volume</span></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 6 POWER AMP -->
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="power"><!-- 6 POWER AMP -->
   <div class="unit" style="height:210px;justify-content:space-around">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:20deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">M-200 · Stereo Power Amplifier · 100 W per channel</span>
@@ -90,9 +87,8 @@
     <div class="col"><button class="btn sq" aria-label="Power">⏻</button><span class="print" style="font-size:9px">Power</span><span class="print" style="font-size:9px;margin-top:14px">Peak</span><span id="peak" style="width:10px;height:10px;border-radius:50%;background:#3a0d08;box-shadow:inset 0 0 2px #000"></span></div>
     <div class="window vu" id="vu2"></div>
   </div>
-  <div class="feet"><i></i><i></i></div>
-
-  <!-- 7 REEL TO REEL -->
+  <div class="feet"><i></i><i></i></div></div>
+  <div class="u" data-unit="reel"><!-- 7 REEL TO REEL -->
   <div class="unit silver" id="reelunit" style="height:300px;justify-content:space-between">
     <span class="screw" style="left:8px;top:8px"></span><span class="screw" style="right:8px;top:8px;--r:50deg"></span>
     <span class="brand">W&amp;F</span><span class="print model">RR-7 · 3-Motor Open Reel · 7.5 / 15 ips</span>
@@ -104,6 +100,7 @@
     </div>
     <svg id="reelR" width="210" height="210" viewBox="0 0 210 210"></svg>
   </div>
+</div>
 </div>
 
 <div id="rear">
@@ -118,9 +115,13 @@
 
 <div class="note" id="note">Hold a preset to store a station. Drag the dial or turn the tuning knob.</div>
 
-<div class="shop"><h2>THE SHELF · BROWSE, PRICE, SAVE UP</h2><div class="shelf" id="shelf"></div></div>
+<div id="empty" class="note">The rack is nearly empty. Open the Sunday flyer.</div>
 </main>
 
+<div id="flyer" hidden><button class="btn" id="flyerclose">Close flyer</button><div class="paper" id="paper"></div></div>
+<div class="earn" id="earn"></div>
 <div id="toast"><span id="toastmsg"></span><button class="btn" id="restart">Restart</button></div>
 <script src="app.js"></script>
+<script src="flyer.js"></script>
+<script src="game.js"></script>
 </body></html>

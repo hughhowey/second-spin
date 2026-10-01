@@ -158,3 +158,51 @@ body{background:#0b0708;color:#ddd;font-family:var(--f-print);user-select:none;-
 /* update toast */
 #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:30;display:none;align-items:center;gap:14px;padding:12px 18px;border-radius:4px;background:rgba(18,12,13,.94);border:1px solid #4a3a38;box-shadow:0 12px 30px rgba(0,0,0,.7);font:600 14px var(--f-print);letter-spacing:.08em;color:#eadbd4}
 #toast.show{display:flex}
+
+/* ---------- rack gating, deck door ---------- */
+.u.hidden{display:none}
+.door{width:352px;height:240px}
+#empty{margin-top:30px}
+.earn{position:fixed;top:54px;right:30px;z-index:16;font:400 13px var(--f-dev);color:var(--amber);text-shadow:0 0 8px rgba(255,178,58,.6);opacity:0;transition:opacity .4s,transform .8s;transform:translateY(0)}
+.earn.show{opacity:1;transform:translateY(8px)}
+#now{font:600 12px var(--f-print);letter-spacing:.14em;color:#b9a79b;max-width:36vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- the Sunday flyer ---------- */
+#flyer{position:fixed;inset:0;z-index:40;overflow-y:auto;padding:70px 0 80px;background:rgba(6,3,4,.88);backdrop-filter:blur(3px)}
+#flyer[hidden]{display:none}
+#flyerclose{position:fixed;top:18px;right:26px;z-index:41}
+.paper{--ink:#1b1a17;--red:#c4161c;position:relative;width:1060px;margin:0 auto;padding:26px 30px 34px;color:var(--ink);
+  background:var(--grain),linear-gradient(90deg,rgba(0,0,0,.07),transparent 3%,transparent 97%,rgba(0,0,0,.07)),#e8e1cd;background-blend-mode:multiply,normal,normal;
+  box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.4);transform:rotate(-.35deg)}
+.paper:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(90deg,rgba(0,0,0,.18),transparent);pointer-events:none}
+.mast{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:5px solid var(--ink);padding-bottom:10px}
+.mast .logo{font:800 78px/0.9 "Barlow Condensed",sans-serif;letter-spacing:-.01em;color:var(--red);text-shadow:3px 3px 0 rgba(0,0,0,.85)}
+.mast .logo small{display:block;margin-top:4px;font:800 26px "Barlow Condensed";letter-spacing:.32em;color:var(--ink);text-shadow:none}
+.mast .dateline{text-align:right;font:600 15px "Barlow Condensed";letter-spacing:.2em;text-transform:uppercase;line-height:1.5}
+.mast .dateline b{display:block;font:800 30px "Barlow Condensed";letter-spacing:.06em;color:var(--red)}
+.banner{margin:14px 0 18px;padding:7px 12px;background:var(--ink);color:#f1e9d2;font:800 24px "Barlow Condensed";letter-spacing:.18em;text-align:center;text-transform:uppercase}
+.sect{margin:26px 0 12px;display:flex;align-items:center;gap:14px;font:800 30px "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase}
+.sect:before,.sect:after{content:"";flex:1;height:4px;background:var(--ink)}
+.sect span{padding:2px 14px;background:var(--red);color:#f6eedb}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
+.item{position:relative;padding:14px 14px 14px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);min-height:300px;display:flex;flex-direction:column}
+.item .pic{position:relative;margin:2px 0 10px;border:1px solid rgba(0,0,0,.35);background:#d7cfb7;overflow:hidden}
+.item .pic svg{display:block;width:100%;height:auto;mix-blend-mode:multiply;filter:contrast(1.05) saturate(.8)}
+.item .pic:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(0,0,0,.34) 0 .9px,transparent 1.2px) 0 0/4px 4px;mix-blend-mode:multiply;opacity:.55}
+.item h4{margin:0;font:800 22px/1.05 "Barlow Condensed";text-transform:uppercase;letter-spacing:.02em}
+.item .mdl{font:600 13px "Barlow Condensed";letter-spacing:.16em;color:#5a5446;text-transform:uppercase;margin:2px 0 6px}
+.item ul{margin:0 0 8px;padding:0 0 0 16px;font:600 14px/1.25 "Barlow Condensed";letter-spacing:.03em}
+.item .row2{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.price{font:800 44px/0.9 "Barlow Condensed";color:var(--red);letter-spacing:-.01em;text-shadow:1.5px 1.5px 0 rgba(0,0,0,.8)}
+.price sup{font-size:.5em;vertical-align:top;position:relative;top:.1em}
+.was{font:600 13px "Barlow Condensed";letter-spacing:.1em;text-transform:uppercase;color:#5a5446}
+.buy{border:0;cursor:pointer;padding:9px 16px;background:var(--ink);color:#f6eedb;font:800 16px "Barlow Condensed";letter-spacing:.16em;text-transform:uppercase}
+.buy:hover{background:var(--red)}
+.buy[disabled]{background:#8d8672;cursor:default}
+.tier{position:absolute;top:8px;left:8px;z-index:2;padding:2px 8px;background:var(--ink);color:#f6eedb;font:800 13px "Barlow Condensed";letter-spacing:.18em}
+.burst{position:absolute;top:-6px;right:-6px;z-index:3;width:92px;height:92px;display:flex;align-items:center;justify-content:center;text-align:center;
+  font:800 17px/1 "Barlow Condensed";letter-spacing:.04em;color:var(--ink);background:#f2c230;transform:rotate(9deg);
+  clip-path:polygon(50% 0,58% 12%,71% 5%,74% 19%,89% 17%,85% 31%,98% 36%,89% 47%,100% 57%,87% 63%,92% 77%,78% 78%,76% 92%,63% 87%,55% 100%,46% 89%,34% 98%,30% 84%,16% 90%,17% 75%,3% 70%,11% 58%,0 48%,12% 39%,5% 26%,19% 24%,20% 9%,34% 15%,42% 2%)}
+.owned{color:#2c6a2f}
+.soon .pic svg{filter:grayscale(.6) contrast(.9)}
+.fine{margin-top:22px;padding-top:10px;border-top:2px solid var(--ink);font:600 12px/1.4 "Barlow Condensed";letter-spacing:.06em;color:#4a463b;text-transform:uppercase;column-count:3;column-gap:24px}
