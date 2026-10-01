@@ -24,7 +24,10 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build:local
-      - name: Build private Mac preview
+      # Avoid electron-builder's automatic certificate import: 26.15.3 passes
+      # the certificate password to set-key-partition-list instead of the
+      # generated keychain password. Import explicitly, then use CSC_KEYCHAIN.
+      - name: Prepare preview signing keychain
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
@@ -32,7 +35,33 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          if [ -n "$CSC_LINK" ] && [ -n "$APPLE_ID" ] && [ -n "$APPLE_APP_SPECIFIC_PASSWORD" ] && [ -n "$APPLE_TEAM_ID" ]; then
+          if [ -z "$CSC_LINK" ] || [ -z "$APPLE_ID" ] || [ -z "$APPLE_APP_SPECIFIC_PASSWORD" ] || [ -z "$APPLE_TEAM_ID" ]; then
+            echo "WF_PREVIEW_SIGNED=no" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          umask 077
+          WF_KEYCHAIN="$RUNNER_TEMP/record-shop-preview.keychain-db"
+          WF_KEYCHAIN_PASSWORD="$(uuidgen)"
+          WF_CERTIFICATE="$RUNNER_TEMP/record-shop-preview.p12"
+          echo "::add-mask::$WF_KEYCHAIN_PASSWORD"
+          trap 'rm -f "$WF_CERTIFICATE"' EXIT
+          printf '%s' "$CSC_LINK" | base64 --decode > "$WF_CERTIFICATE"
+          security create-keychain -p "$WF_KEYCHAIN_PASSWORD" "$WF_KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$WF_KEYCHAIN"
+          security unlock-keychain -p "$WF_KEYCHAIN_PASSWORD" "$WF_KEYCHAIN"
+          security import "$WF_CERTIFICATE" -k "$WF_KEYCHAIN" -P "$CSC_KEY_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S "apple-tool:,apple:,codesign:" -s -k "$WF_KEYCHAIN_PASSWORD" "$WF_KEYCHAIN" > /dev/null
+          security list-keychains -d user -s "$WF_KEYCHAIN" login.keychain-db
+          echo "CSC_KEYCHAIN=$WF_KEYCHAIN" >> "$GITHUB_ENV"
+          echo "WF_PREVIEW_SIGNED=yes" >> "$GITHUB_ENV"
+      - name: Build private Mac preview
+        env:
+          # Deliberately no CSC_LINK here: use the keychain prepared above.
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ "$WF_PREVIEW_SIGNED" = "yes" ]; then
             npx electron-builder --mac zip --arm64 --publish never -c.extraMetadata.wfPreview=true
           else
             CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac zip --arm64 --publish never -c.mac.identity=null -c.mac.notarize=false -c.extraMetadata.wfPreview=true
@@ -43,3 +72,9 @@ jobs:
           path: flutter/dist/*.zip
           retention-days: 7
           if-no-files-found: error
+      - name: Remove preview signing keychain
+        if: always()
+        run: |
+          WF_KEYCHAIN="$RUNNER_TEMP/record-shop-preview.keychain-db"
+          if [ -f "$WF_KEYCHAIN" ]; then security delete-keychain "$WF_KEYCHAIN"; fi
+          rm -f "$RUNNER_TEMP/record-shop-preview.p12"
