@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W&amp;F — stack mockup</title>
+<style>
+@font-face{font-family:"Michroma";src:url(fonts/Michroma-Regular.ttf)}
+@font-face{font-family:"Barlow Condensed";font-weight:600;src:url(fonts/BarlowCondensed-SemiBold.ttf)}
+@font-face{font-family:"Reenie Beanie";src:url(fonts/ReenieBeanie.ttf)}
+:root{--vfd:#5ff3e0;--vfd-dim:#0f3a38;--amber:#ffb23a;--led:#7dff5a;--red:#ff3b2a;
+ --f-dev:"Michroma",sans-serif;--f-print:"Barlow Condensed","Arial Narrow",sans-serif;--f-hand:"Reenie Beanie",cursive}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#1a0f12;color:#ddd;font-family:var(--f-print);
+ background:radial-gradient(ellipse at 50% -10%,#3a0d12 0,#1a0f12 55%,#0b0708 100%);display:flex;flex-direction:column;align-items:center;padding:0 12px 60px;user-select:none}
+.neon{position:fixed;top:0;left:0;right:0;height:3px;background:var(--red);box-shadow:0 0 18px 6px rgba(255,59,42,.55);z-index:5}
+header{width:min(760px,100%);display:flex;justify-content:space-between;align-items:center;padding:22px 4px 14px}
+h1{margin:0;font:400 20px var(--f-dev);letter-spacing:.2em;color:#eee}
+h1 small{display:block;font:600 12px var(--f-print);letter-spacing:.3em;color:#999;margin-top:6px}
+.wallet{font:400 15px var(--f-dev);color:var(--amber);text-align:right}
+.wallet small{display:block;font:600 11px var(--f-print);color:#a88;letter-spacing:.15em;margin-top:5px}
+.bar{display:flex;gap:8px;margin-bottom:14px;width:min(760px,100%)}
+button.k{font:600 13px var(--f-print);letter-spacing:.15em;color:#ddd;background:#2b2b2e;border:1px solid #555;border-radius:3px;padding:7px 12px;cursor:pointer;box-shadow:0 2px 0 #000}
+button.k:active,button.k.on{transform:translateY(1px);box-shadow:none;background:#3c3c40;color:#fff}
+button.k.on{color:var(--vfd)}
+#stack,#rear{width:min(760px,100%)}
+.unit{position:relative;background:linear-gradient(#242427,#151517 8%,#101012);border-radius:4px;border-top:1px solid #444;
+ box-shadow:0 6px 12px #000a,inset 0 0 0 1px #0008;padding:12px 18px;display:flex;align-items:center;gap:16px;min-height:78px}
+.feet{display:flex;justify-content:space-between;padding:0 40px;height:7px}
+.feet i{width:44px;height:7px;background:linear-gradient(90deg,#666,#ddd 45%,#777);border-radius:0 0 3px 3px}
+.brand{position:absolute;top:5px;left:18px;font:400 8px var(--f-dev);letter-spacing:.22em;color:#bbb}
+.model{font:600 9px var(--f-print);letter-spacing:.14em;color:#8a8a8f;position:absolute;right:18px;top:5px}
+.vfd{background:#031312;border:1px solid #000;border-radius:2px;box-shadow:inset 0 0 8px #000;color:var(--vfd);text-shadow:0 0 6px var(--vfd);font:400 17px var(--f-dev);padding:7px 11px;min-width:190px;margin-top:8px}
+.vfd small{display:block;font:600 11px var(--f-print);letter-spacing:.15em;opacity:.8;margin-top:2px;white-space:nowrap}
+.lbl{font:600 9px var(--f-print);letter-spacing:.16em;color:#9a9aa0;text-align:center;margin-top:4px}
+.row{display:flex;gap:6px;align-items:center}
+/* tuner */
+#scale{position:relative;flex:none;height:56px;margin-top:8px;border-radius:2px;cursor:ew-resize;background:linear-gradient(#2a1a05,#0c0702);border:1px solid #000;overflow:hidden;box-shadow:inset 0 0 14px #000}
+#scale canvas{position:absolute;inset:0;width:100%;height:100%}
+#needle{position:absolute;top:0;bottom:0;width:2px;background:var(--red);box-shadow:0 0 8px var(--red);pointer-events:none}
+.presets{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
+.presets button{font:600 12px var(--f-print);background:#2b2b2e;border:1px solid #555;color:#ccc;border-radius:2px;padding:5px 0;cursor:pointer;position:relative;box-shadow:0 2px 0 #000}
+.presets button.set{color:var(--amber)} .presets button.cur{color:var(--vfd)}
+/* eq */
+.eq{display:flex;gap:7px;flex:1;justify-content:space-around;align-items:flex-end;height:64px}
+.band{display:flex;flex-direction:column;align-items:center;gap:3px;width:26px}
+.col{position:relative;width:14px;height:50px;background:#0a0a0a;border-radius:2px;border:1px solid #000;cursor:ns-resize;overflow:hidden}
+.col .fill{position:absolute;bottom:0;left:0;right:0;background:repeating-linear-gradient(0deg,var(--led) 0 3px,transparent 3px 5px);filter:drop-shadow(0 0 3px var(--led))}
+.col .cap{position:absolute;left:-2px;right:-2px;height:7px;background:linear-gradient(#ddd,#888);border-radius:1px}
+.band span{font:600 8px var(--f-print);color:#888}
+.spec{display:flex;gap:2px;align-items:flex-end;height:44px;width:120px}
+.spec i{flex:1;background:var(--vfd);box-shadow:0 0 4px var(--vfd);height:3px;opacity:.9}
+/* deck */
+.well{position:relative;width:210px;height:62px;border-radius:3px;background:#0c0c0e;border:2px solid #000;margin-top:8px;display:flex;align-items:center;justify-content:space-around;box-shadow:inset 0 0 12px #000}
+.well:before{content:"";position:absolute;inset:6px 30px;background:#1b1713;border:1px solid #432;border-radius:3px}
+.reel{position:relative;width:34px;height:34px;border-radius:50%;background:radial-gradient(#e8e8e8 0 28%,#333 30% 45%,#6b4a2c 47%);z-index:1}
+.reel:after{content:"";position:absolute;inset:11px;border-radius:50%;border:2px dashed #444}
+.spin .reel{animation:r 1.6s linear infinite}@keyframes r{to{transform:rotate(360deg)}}
+.tr{display:flex;gap:4px;margin-top:6px}.tr button{width:34px;font:400 11px sans-serif;padding:6px 0;background:#2b2b2e;border:1px solid #555;color:#ddd;border-radius:2px;cursor:pointer;box-shadow:0 2px 0 #000}
+/* cd */
+.tray{display:flex;gap:5px;margin-top:8px}.disc{width:30px;height:30px;border-radius:50%;background:conic-gradient(#aab,#445,#ccd,#334,#aab);border:2px solid #000;display:flex;align-items:center;justify-content:center;font:600 11px var(--f-print);color:#000;cursor:pointer;opacity:.55}
+.disc.cur{opacity:1;box-shadow:0 0 0 2px var(--vfd)}
+.carousel{font:600 10px var(--f-print);letter-spacing:.14em;color:#889;margin-left:auto;text-align:right;max-width:150px}
+/* amp */
+.knob{position:relative;width:70px;height:70px;border-radius:50%;background:conic-gradient(from 0deg,#555,#222,#666,#1d1d1d,#555);border:3px solid #0a0a0a;box-shadow:0 4px 8px #000,inset 0 0 6px #000;cursor:grab;flex:none}
+.knob:after{content:"";position:absolute;left:50%;top:5px;width:3px;height:16px;margin-left:-1.5px;background:#eee;border-radius:2px}
+.knob.sm{width:34px;height:34px}.knob.sm:after{top:3px;height:9px;width:2px}
+.inputs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;flex:1}
+/* vu */
+.vu{position:relative;flex:1;height:62px;margin-top:6px;border-radius:3px;border:2px solid #000;background:radial-gradient(ellipse at 50% 120%,#ffd98a,#d8902a 60%,#7a4a10);overflow:hidden;box-shadow:inset 0 0 14px #5a3300}
+.vu .nd{position:absolute;left:50%;bottom:-6px;width:2px;height:56px;background:#200;transform-origin:50% 100%;transform:rotate(-50deg);transition:transform .08s}
+.vu b{position:absolute;left:8px;top:4px;font:600 10px var(--f-print);color:#5a2a00;letter-spacing:.14em}
+.vu.right b{left:auto;right:8px}
+.bigreel{width:104px;height:104px;border-radius:50%;margin-top:10px;background:radial-gradient(#222 0 10%,#ccc 11% 14%,#222 15% 18%,#ddd 19% 22%,#555 23% 27%,#e0e0e4 28%);border:3px solid #666;box-shadow:0 3px 6px #0008;position:relative}
+.bigreel:after{content:"";position:absolute;inset:6px;border-radius:50%;border:6px solid transparent;border-top-color:#222;border-bottom-color:#222;opacity:.55}
+.spin .bigreel,.bigreel.spin{animation:r 2.4s linear infinite}
+/* 70s tier hint */
+.silver{background:linear-gradient(#d9d9dc,#a8a8ae 10%,#8e8e94);border-top:1px solid #fff;color:#222}
+.silver .brand,.silver .model,.silver .lbl{color:#333}
+.wood{position:absolute;top:0;bottom:0;width:10px;background:linear-gradient(90deg,#5a2415,#8a3d22,#5a2415)}
+/* rear */
+#rear{display:none}
+.rearunit{background:linear-gradient(#bbb,#8d8d92);color:#222;border-radius:3px;padding:10px 14px;margin-bottom:10px;box-shadow:0 5px 10px #000a;display:flex;gap:14px;align-items:center;flex-wrap:wrap;min-height:70px}
+.jack{display:flex;flex-direction:column;align-items:center;font:600 9px var(--f-print);letter-spacing:.1em}
+.jack i{width:20px;height:20px;border-radius:50%;border:3px solid #555;background:radial-gradient(#111 0 30%,#ddd 32%);margin-bottom:3px;cursor:pointer}
+.jack i.l{border-color:#fff;background:radial-gradient(#111 0 30%,#fff 32%)}.jack i.r{border-color:#e22}
+.jack i.cab{box-shadow:0 0 0 3px #3a3 }
+.rearunit h3{margin:0;font:400 10px var(--f-dev);letter-spacing:.18em}
+.note{font:400 26px var(--f-hand);color:#c8b8a0;width:min(760px,100%);margin:14px 0 0;text-align:center}
+.shop{width:min(760px,100%);margin-top:22px;border-top:1px dashed #555;padding-top:12px}
+.shop h2{font:400 12px var(--f-dev);letter-spacing:.2em;color:#aaa;margin:0 0 10px}
+.shelf{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.tag{flex:none;width:170px;background:#f4ecd2;color:#222;border-radius:2px;padding:9px;position:relative;box-shadow:0 3px 6px #000a}
+.tag b{display:block;font:600 15px var(--f-print);letter-spacing:.05em}
+.tag span{font:600 11px var(--f-print);color:#666;display:block}
+.tag em{font:400 24px var(--f-hand);color:#b01;font-style:normal;display:block}
+.tag button{margin-top:4px;font:600 12px var(--f-print);width:100%;padding:5px;border:0;background:#222;color:#fff;cursor:pointer}
+.tag button:disabled{background:#999}
+</style></head><body>
+<div class="neon"></div>
+<header>
+  <h1>W&amp;F<small>STEREO MEMORY SYSTEM · MOCKUP 0.1</small></h1>
+  <div class="wallet"><span id="cash">$0.00</span><small>EARNED BY LISTENING</small></div>
+</header>
+<div class="bar">
+  <button class="k" id="power">POWER</button>
+  <button class="k" id="listen">▶ LISTEN (SIM)</button>
+  <button class="k" id="flip">TURN RACK AROUND</button>
+</div>
+
+<div id="stack">
+  <!-- TUNER -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">TX-410 · SYNTHESIZED FM/AM TUNER</div>
+    <div class="vfd" id="tdisp">FM 91.5<small>—</small></div>
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div id="scale"><canvas></canvas><div id="needle"></div></div>
+      <div class="presets" id="presets"></div>
+    </div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- EQ -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">EQ-10 · GRAPHIC EQUALIZER / SPECTRUM</div>
+    <div class="eq" id="eq"></div><div class="spec" id="spec"></div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- DECK -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">TD-720 · AUTO REVERSE · HX PRO</div>
+    <div><div class="well" id="well"><div class="reel"></div><div class="reel"></div></div>
+      <div class="tr"><button id="rew">◀◀</button><button id="play">▶</button><button id="stop">■</button><button id="rec" style="color:#f55">●</button></div></div>
+    <div class="vfd" id="ddisp">0:00<small>DECK A · NO TAPE</small></div>
+    <div class="carousel">TOC · BLANK 90 · SIDE A</div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- CD -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">CD-6 · 6 DISC CHANGER · INTRO / PROGRAM</div>
+    <div><div class="tray" id="tray"></div><div class="tr"><button id="intro" style="width:auto;padding:6px 10px;font:600 11px var(--f-print)">INTRO</button><button id="cdplay">▶</button></div></div>
+    <div class="vfd" id="cdisp">D–<small>NO DISC</small></div>
+    <div class="carousel">100-DISC MAGAZINE<br>ON LAYAWAY</div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- AMP -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">A-9 · INTEGRATED STEREO AMPLIFIER</div>
+    <div class="inputs" id="inputs"></div>
+    <div class="row" style="margin-top:8px"><div><div class="knob sm" data-k="bass"></div><div class="lbl">BASS</div></div>
+      <div><div class="knob sm" data-k="treble"></div><div class="lbl">TREBLE</div></div>
+      <button class="k" id="loud">LOUDNESS</button></div>
+    <div><div class="knob" id="vol" data-k="vol"></div><div class="lbl" id="volv">VOLUME</div></div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- POWER AMP -->
+  <div class="unit">
+    <div class="brand">W&amp;F</div><div class="model">M-200 · POWER AMPLIFIER</div>
+    <div class="vu"><b>L</b><div class="nd" id="vl"></div></div>
+    <div class="vu right"><b>R</b><div class="nd" id="vr"></div></div>
+  </div>
+  <div class="feet"><i></i><i></i></div>
+  <!-- REEL TO REEL -->
+  <div class="unit silver" style="min-height:150px;justify-content:space-around">
+    <div class="brand">W&amp;F</div><div class="model">RR-7 · 3-MOTOR · 7.5 / 15 IPS</div>
+    <div class="bigreel" id="r1"></div>
+    <div class="vu" style="max-width:150px"><b>L&nbsp;&nbsp;R</b><div class="nd" id="vl2"></div></div>
+    <div class="bigreel" id="r2"></div>
+  </div>
+</div>
+
+<div id="rear">
+  <div class="rearunit"><h3>A-9 · REAR</h3>
+    <div class="jack"><i class="l"></i>CD L</div><div class="jack"><i class="r"></i>CD R</div>
+    <div class="jack"><i class="l"></i>TAPE L</div><div class="jack"><i class="r"></i>TAPE R</div>
+    <div class="jack"><i class="l" id="auxl"></i>AUX L</div><div class="jack"><i class="r" id="auxr"></i>AUX R</div>
+    <div class="jack"><i></i>SPEAKERS A</div><div class="jack"><i></i>SPEAKERS B</div></div>
+  <div class="rearunit"><h3>TD-720 · REAR</h3><div class="jack"><i class="l cab"></i>LINE OUT L</div><div class="jack"><i class="r cab"></i>LINE OUT R</div><div class="jack"><i></i>SYSTEM REMOTE</div></div>
+  <div class="note" id="rnote">Something's missing from AUX. A cable with a 3.5mm plug on one end… (click the AUX jacks)</div>
+</div>
+
+<div class="note" id="note">Hold a preset button for a second to store a station. Drag the dial.</div>
+
+<div class="shop"><h2>THE SHELF · BROWSE, PRICE, SAVE UP</h2><div class="shelf" id="shelf"></div></div>
+
+<script>
+const $=s=>document.querySelector(s), on=false;
+let powered=true, listening=false, band=91.5, vol=.6, cash=0, loud=false;
+const stations=[
+ {f:88.3,n:"THE BASEMENT",g:"college · indie"},{f:90.7,n:"NIGHT SCHOOL",g:"jangle · folk"},
+ {f:93.1,n:"ALT 93",g:"alternative"},{f:96.5,n:"THE RIDE",g:"driving songs"},
+ {f:99.9,n:"HEAVY ROTATION",g:"grunge · heavy"},{f:102.7,n:"BLOCK PARTY",g:"hip-hop"},{f:105.3,n:"GOLD",g:"your parents' records"}];
+const presets=Array(6).fill(null); let curPre=-1;
+// ---- audio (static between stations)
+let ac,ng; function audio(){ if(ac)return; ac=new (window.AudioContext||window.webkitAudioContext)();
+ const b=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+ const s=ac.createBufferSource();s.buffer=b;s.loop=true;ng=ac.createGain();ng.gain.value=0;
+ const f=ac.createBiquadFilter();f.type='highpass';f.frequency.value=1500;s.connect(f).connect(ng).connect(ac.destination);s.start();}
+// ---- tuner
+const cv=$('#scale canvas'); function drawScale(){const w=cv.width=cv.clientWidth*2,h=cv.height=cv.clientHeight*2,c=cv.getContext('2d');
+ c.clearRect(0,0,w,h);c.fillStyle='#ffb23a';c.strokeStyle='#ffb23a';c.font='600 20px "Barlow Condensed"';
+ for(let f=88;f<=108;f+=.5){const x=(f-88)/20*w, big=Number.isInteger(f),e=!(f*2%2);c.globalAlpha=big?1:.6;c.beginPath();c.moveTo(x,h);c.lineTo(x,h-(big?22:12));c.stroke();if(big&&f%2==0)c.fillText(f,x-12,h-28);}
+ c.globalAlpha=.9;stations.forEach(s=>{const x=(s.f-88)/20*w;c.fillStyle='#fff';c.fillRect(x-2,8,4,8)});}
+function nearest(){return stations.reduce((a,s)=>Math.abs(s.f-band)<Math.abs(a.f-band)?s:a)}
+function tune(f){band=Math.max(88,Math.min(108,Math.round(f*10)/10));$('#needle').style.left=((band-88)/20*100)+'%';
+ const s=nearest(),dist=Math.abs(s.f-band),lock=dist<.35;
+ $('#tdisp').innerHTML=`FM ${band.toFixed(1)}<small>${lock?s.n+' · '+s.g:(dist<1.2?'~ ~ ~ static':'SCAN…')}</small>`;
+ if(ng)ng.gain.value=powered?(lock?0:Math.min(.18,dist*.1))*vol:0;
+ curPre=presets.findIndex(p=>p===band);renderPre();}
+function renderPre(){const el=$('#presets');el.innerHTML='';presets.forEach((p,i)=>{const b=document.createElement('button');b.textContent=(i+1)+(p?'':' ·');b.className=(p?'set ':'')+(i===curPre?'cur':'');
+ let t;b.onpointerdown=()=>{t=setTimeout(()=>{presets[i]=band;t=null;note(`Preset ${i+1} stored: FM ${band.toFixed(1)}.`);tune(band)},900)};
+ b.onpointerup=b.onpointerleave=()=>{if(t){clearTimeout(t);t=null;if(presets[i])tune(presets[i])}};el.appendChild(b)})}
+const sc=$('#scale');let drag=false;const setFrom=e=>{audio();const r=sc.getBoundingClientRect();tune(88+(e.clientX-r.left)/r.width*20)};
+sc.onpointerdown=e=>{drag=true;sc.setPointerCapture(e.pointerId);setFrom(e)};sc.onpointermove=e=>drag&&setFrom(e);sc.onpointerup=()=>drag=false;
+sc.onwheel=e=>{e.preventDefault();tune(band+(e.deltaY>0?.1:-.1))};
+// ---- EQ
+const EQ=[31,62,125,250,500,1000,2000,4000,8000,16000],eqv=EQ.map(()=>.5);
+EQ.forEach((f,i)=>{const d=document.createElement('div');d.className='band';d.innerHTML=`<div class="col"><div class="fill"></div><div class="cap"></div></div><span>${f>=1000?f/1000+'k':f}</span>`;
+ const col=d.firstChild;const set=e=>{const r=col.getBoundingClientRect();eqv[i]=Math.max(0,Math.min(1,1-(e.clientY-r.top)/r.height));paint(i)};
+ let dr=false;col.onpointerdown=e=>{dr=true;col.setPointerCapture(e.pointerId);set(e)};col.onpointermove=e=>dr&&set(e);col.onpointerup=()=>dr=false;$('#eq').appendChild(d)});
+function paint(i){const c=document.querySelectorAll('.col')[i];c.firstChild.style.height=eqv[i]*100+'%';c.lastChild.style.bottom=`calc(${eqv[i]*100}% - 3px)`}
+EQ.forEach((_,i)=>paint(i));
+const spec=$('#spec');for(let i=0;i<14;i++)spec.appendChild(document.createElement('i'));
+// ---- amp
+const inputs=['PHONO','TUNER','CD','TAPE'];let src='TUNER';
+inputs.forEach(n=>{const b=document.createElement('button');b.className='k';b.textContent=n;b.onclick=()=>{src=n;[...$('#inputs').children].forEach(x=>x.classList.toggle('on',x.textContent===src));note(n==='PHONO'?'No turntable yet. It\'s on the shelf below.':'Source: '+n)};$('#inputs').appendChild(b)});
+[...$('#inputs').children][1].classList.add('on');
+document.querySelectorAll('.knob').forEach(k=>{let a=k.dataset.k==='vol'?vol*270-135:0,d=false,y0=0,a0=0;k.style.transform=`rotate(${a}deg)`;
+ k.onpointerdown=e=>{d=true;y0=e.clientY;a0=a;k.setPointerCapture(e.pointerId);k.style.cursor='grabbing'};
+ k.onpointermove=e=>{if(!d)return;a=Math.max(-135,Math.min(135,a0+(y0-e.clientY)*2));k.style.transform=`rotate(${a}deg)`;if(k.dataset.k==='vol'){vol=(a+135)/270;$('#volv').textContent='VOLUME '+Math.round(vol*60)-60+' dB';$('#volv').textContent='VOLUME −'+Math.round((1-vol)*60)+' dB';tune(band)}};
+ k.onpointerup=()=>{d=false;k.style.cursor='grab'}});
+$('#loud').onclick=e=>{loud=!loud;e.target.classList.toggle('on',loud);note(loud?'LOUDNESS on: leans harder on what you already love.':'LOUDNESS off.')};
+// ---- deck + cd
+const well=$('#well');let tapeT=0,tapeTimer;
+function deck(run){well.classList.toggle('spin',run);$('#r1').classList.toggle('spin',run);$('#r2').classList.toggle('spin',run);clearInterval(tapeTimer);if(run)tapeTimer=setInterval(()=>{tapeT++;$('#ddisp').innerHTML=`${Math.floor(tapeT/60)}:${String(tapeT%60).padStart(2,'0')}<small>DECK A · PLAY</small>`},1000)}
+$('#play').onclick=()=>deck(true);$('#stop').onclick=()=>{deck(false);$('#ddisp').querySelector('small').textContent='DECK A · STOP'};
+$('#rew').onclick=()=>{tapeT=0;deck(false);$('#ddisp').innerHTML='0:00<small>DECK A · REWOUND</small>'};
+$('#rec').onclick=()=>note('Recording off the tuner. Only a full listen records, like Phony. Dubbing to Phony comes later.');
+const discs=['—','—','—','—','—','—'].map((_,i)=>i);let curD=0;
+discs.forEach(i=>{const d=document.createElement('div');d.className='disc'+(i===0?' cur':'');d.textContent=i+1;d.onclick=()=>{curD=i;[...$('#tray').children].forEach((x,j)=>x.classList.toggle('cur',j===i));$('#cdisp').innerHTML=`D${i+1} T01<small>EMPTY SLOT</small>`};$('#tray').appendChild(d)});
+$('#intro').onclick=()=>{let t=1;$('#cdisp').innerHTML=`INTRO<small>10 SEC PER TRACK</small>`;const iv=setInterval(()=>{$('#cdisp').innerHTML=`T${String(t).padStart(2,'0')}<small>INTRO · ${10}s</small>`;if(++t>3){clearInterval(iv);note('INTRO plays three tracks, ten seconds each. Three songs before the album.')}},1200)};
+$('#cdplay').onclick=()=>note('Load an album first (coming: pick from your shelf).');
+// ---- listen / earn / meters
+let nl=0,nr=0;setInterval(()=>{const run=powered&&listening;
+ const bars=spec.children;for(const b of bars)b.style.height=(run?4+Math.random()*(8+40*vol)*(loud?1.2:1):3)+'px';
+ const t=run?(.25+Math.random()*.6)*vol+.1:0;nl+=(t-nl)*.5;nr+=(t*(.8+Math.random()*.3)-nr)*.5;
+ $('#vl').style.transform=`rotate(${-50+nl*85}deg)`;$('#vl2').style.transform=`rotate(${-50+nl*85}deg)`;$('#vr').style.transform=`rotate(${-50+nr*85}deg)`},90);
+setInterval(()=>{if(powered&&listening){cash+=0.01;$('#cash').textContent='$'+cash.toFixed(2)}},1000);
+$('#listen').onclick=e=>{audio();listening=!listening;e.target.classList.toggle('on',listening);deck(listening);note(listening?'Simulated listening: a cent a second here. In the real app it pays only on confirmed full songs; whole albums pay more; repeats pay most.':'Stopped.')};
+$('#power').onclick=e=>{powered=!powered;document.body.style.opacity=1;document.querySelectorAll('.vfd,.vu').forEach(x=>x.style.filter=powered?'':'brightness(.15)');if(ng)ng.gain.value=0;if(powered)tune(band)};
+$('#flip').onclick=e=>{const r=$('#rear').style.display==='block';$('#rear').style.display=r?'none':'block';$('#stack').style.display=r?'block':'none';e.target.textContent=r?'TURN RACK AROUND':'TURN IT BACK'};
+['#auxl','#auxr'].forEach(s=>$(s).onclick=()=>$('#rnote').textContent='AUX is empty. Phony\'s cable will plug in here someday (RCA to headphone jack).');
+// ---- shop
+const gear=[
+ ['Turntable, belt drive','used · 1978 · wood base',45,'Plays your oldest records.'],
+ ['Dual cassette deck','used · 1988 · auto reverse',120,'Deck B records off the dial.'],
+ ['MiniDisc deck','new · 1996 · ATRAC',260,'One 74-minute disc per year.'],
+ ['5-disc CD changer','new · 1992',180,'Five albums, edge to edge.'],
+ ['Reel-to-reel','used · 1971 · 7.5 ips',400,'For the really old songs.'],
+ ['100-disc carousel','new · 1994 · LAYAWAY',650,'The big one.']];
+gear.forEach(g=>{const d=document.createElement('div');d.className='tag';d.innerHTML=`<b>${g[0]}</b><span>${g[1]}</span><span>${g[3]}</span><em>$${g[2]}</em><button>${'SAVE UP'}</button>`;
+ d.querySelector('button').onclick=e=>{e.target.textContent=cash>=g[2]?'SOLD (mockup)':'NEED $'+(g[2]-cash).toFixed(2)+' MORE'};$('#shelf').appendChild(d)});
+function note(t){$('#note').textContent=t}
+drawScale();addEventListener('resize',drawScale);tune(91.5);
+</script></body></html>
