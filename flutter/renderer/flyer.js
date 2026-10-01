@@ -70,7 +70,7 @@ function usedState(it, unit) {
 }
 function unitTile(unit, span) {
   const it = CATALOG[unit], st = newState(it, unit);
-  return `<div class="item span${span}"><span class="tier new">NEW!</span><div class="burst">PRICE<br>BREAK!<br><b>SAVE $${Math.round(reg(it.nw) - it.nw)}</b></div>
+  return `<div class="item span${span}"><span class="tier new">NEW!</span><div class="burst">PRICE BREAK!<b>SAVE $${Math.round(reg(it.nw) - it.nw)}</b></div>
     <div class="pic">${thumb(it.kind, 'black')}</div>
     <h4>${it.name}</h4><div class="mdl">Model ${it.model} · ${it.yr[1]}</div>
     <ul>${it.bullets.map(b => `<li>${b}</li>`).join('')}</ul>

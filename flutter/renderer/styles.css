@@ -248,3 +248,4 @@ body{background:#0b0708;color:#ddd;font-family:var(--f-print);user-select:none;-
 .burst{width:124px;height:124px;font-size:14px;top:-16px;right:-14px;padding:0 6px}
 .burst b{font-size:19px}
 .vintage .heat{font-size:42px;white-space:nowrap}.vintage .heat b{font-size:58px}
+.burst{flex-direction:column;line-height:1.05}.burst br{display:none}.burst b{margin-top:3px}
