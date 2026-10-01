@@ -8,7 +8,10 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package": "electron-builder --mac"
+    "package": "electron-builder --mac",
+    "dev": "node shop/dev.js",
+    "test": "node --test tests/*.test.js",
+    "build:local": "node shop/check.js"
   },
   "build": {
     "appId": "com.hughhowey.wowandflutter",
@@ -22,7 +25,9 @@
       "main.js",
       "preload.js",
       "renderer/**/*",
-      "package.json"
+      "package.json",
+      "shop/service.js",
+      "shop/catalog.json"
     ],
     "directories": {
       "buildResources": "build"
@@ -62,6 +67,7 @@
   },
   "devDependencies": {
     "electron": "^44.5.1",
-    "electron-builder": "^26.15.3"
+    "electron-builder": "^26.15.3",
+    "jsdom": "^30.1.1"
   }
 }

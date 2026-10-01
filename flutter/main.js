@@ -6,6 +6,24 @@ const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
+const previewBuild = require('./package.json').wfPreview === true;
+if (!app.isPackaged || previewBuild) app.setPath('userData', process.env.WF_DEV_DATA || path.join(app.getPath('appData'), 'Wow and Flutter Record Shop Preview'));
+const { ShopService } = require('./shop/service');
+let shop;
+const shopService = () => shop ||= new ShopService({ file: path.join(app.getPath('userData'), 'record-shop.json'), apiKey: process.env.OPENAI_API_KEY, model: process.env.OPENAI_MODEL || 'gpt-5-mini' });
+function trustedShop(event) {
+  if (!win || event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame) throw new Error('Invalid shop sender.');
+}
+for (const [channel, handler] of Object.entries({
+  'wf:shop-state': () => shopService().snapshot(),
+  'wf:shop-action': req => shopService().action(req),
+  'wf:shop-chat': req => shopService().chat(req),
+  'wf:shop-cancel': () => shopService().cancel()
+})) ipcMain.handle(channel, async (event, req) => {
+  trustedShop(event);
+  try { return { ok: true, value: await handler(req) }; } catch (e) { return { ok: false, error: /ENOENT|EACCES|ENOSPC/.test(e.message) ? 'Local shop storage is unavailable. Check disk access.' : e.message }; }
+});
+
 const stateFile = () => path.join(app.getPath('userData'), 'window.json');
 function loadState() { try { return JSON.parse(fs.readFileSync(stateFile(), 'utf8')); } catch { return {}; } }
 function saveState(s) { try { fs.writeFileSync(stateFile(), JSON.stringify(s)); } catch {} }
@@ -24,7 +42,8 @@ function createWindow() {
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false }
   });
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
-  win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
+  win.webContents.setWindowOpenHandler(({ url }) => { if (/^https:\/\/open\.spotify\.com\/search\//.test(url)) shell.openExternal(url); return { action: 'deny' }; });
+  win.webContents.on('will-navigate', e => e.preventDefault());
   const remember = () => {
     const b = win.getNormalBounds ? win.getNormalBounds() : win.getBounds();
     saveState({ width: b.width, height: b.height, fullscreen: win.isFullScreen() });
@@ -51,7 +70,7 @@ function buildMenu() {
 let updater = null, updaterReady = false;
 const upd = { state: 'idle', version: '', percent: 0, message: '' };
 function getUpdater() {
-  if (updater || !app.isPackaged) return updater;
+  if (updater || !app.isPackaged || previewBuild) return updater;
   const { autoUpdater } = require('electron-updater');
   autoUpdater.logger = null;
   autoUpdater.autoDownload = true;

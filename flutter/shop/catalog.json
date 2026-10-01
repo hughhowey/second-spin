@@ -1,0 +1,1149 @@
+[
+  {
+    "id": "fear",
+    "artist": "Toad the Wet Sprocket",
+    "title": "fear",
+    "year": 1991,
+    "tags": [
+      "jangle",
+      "folk",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Walk on the Ocean",
+        "artist": "Toad the Wet Sprocket",
+        "album": "fear",
+        "year": 1991
+      },
+      {
+        "title": "Nightingale Song",
+        "artist": "Toad the Wet Sprocket",
+        "album": "fear",
+        "year": 1991
+      },
+      {
+        "title": "All I Want",
+        "artist": "Toad the Wet Sprocket",
+        "album": "fear",
+        "year": 1991
+      }
+    ]
+  },
+  {
+    "id": "fun-games",
+    "artist": "The Connells",
+    "title": "Fun & Games",
+    "year": 1989,
+    "tags": [
+      "jangle",
+      "southern",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Something to Say",
+        "artist": "The Connells",
+        "album": "Fun & Games",
+        "year": 1989
+      },
+      {
+        "title": "Fun & Games",
+        "artist": "The Connells",
+        "album": "Fun & Games",
+        "year": 1989
+      },
+      {
+        "title": "Hey Wow",
+        "artist": "The Connells",
+        "album": "Fun & Games",
+        "year": 1989
+      }
+    ]
+  },
+  {
+    "id": "one-simple-word",
+    "artist": "The Connells",
+    "title": "One Simple Word",
+    "year": 1990,
+    "tags": [
+      "jangle",
+      "southern",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Stone Cold Yesterday",
+        "artist": "The Connells",
+        "album": "One Simple Word",
+        "year": 1990
+      },
+      {
+        "title": "Get a Gun",
+        "artist": "The Connells",
+        "album": "One Simple Word",
+        "year": 1990
+      },
+      {
+        "title": "One Simple Word",
+        "artist": "The Connells",
+        "album": "One Simple Word",
+        "year": 1990
+      }
+    ]
+  },
+  {
+    "id": "ten",
+    "artist": "Pearl Jam",
+    "title": "Ten",
+    "year": 1991,
+    "tags": [
+      "grunge",
+      "heavy",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Alive",
+        "artist": "Pearl Jam",
+        "album": "Ten",
+        "year": 1991
+      },
+      {
+        "title": "Black",
+        "artist": "Pearl Jam",
+        "album": "Ten",
+        "year": 1991
+      },
+      {
+        "title": "Release",
+        "artist": "Pearl Jam",
+        "album": "Ten",
+        "year": 1991
+      }
+    ]
+  },
+  {
+    "id": "nevermind",
+    "artist": "Nirvana",
+    "title": "Nevermind",
+    "year": 1991,
+    "tags": [
+      "grunge",
+      "heavy",
+      "punk"
+    ],
+    "tracks": [
+      {
+        "title": "Come as You Are",
+        "artist": "Nirvana",
+        "album": "Nevermind",
+        "year": 1991
+      },
+      {
+        "title": "Drain You",
+        "artist": "Nirvana",
+        "album": "Nevermind",
+        "year": 1991
+      },
+      {
+        "title": "Lounge Act",
+        "artist": "Nirvana",
+        "album": "Nevermind",
+        "year": 1991
+      }
+    ]
+  },
+  {
+    "id": "blood-sugar",
+    "artist": "Red Hot Chili Peppers",
+    "title": "Blood Sugar Sex Magik",
+    "year": 1991,
+    "tags": [
+      "funk",
+      "heavy",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Breaking the Girl",
+        "artist": "Red Hot Chili Peppers",
+        "album": "Blood Sugar Sex Magik",
+        "year": 1991
+      },
+      {
+        "title": "Under the Bridge",
+        "artist": "Red Hot Chili Peppers",
+        "album": "Blood Sugar Sex Magik",
+        "year": 1991
+      },
+      {
+        "title": "I Could Have Lied",
+        "artist": "Red Hot Chili Peppers",
+        "album": "Blood Sugar Sex Magik",
+        "year": 1991
+      }
+    ]
+  },
+  {
+    "id": "blind-melon",
+    "artist": "Blind Melon",
+    "title": "Blind Melon",
+    "year": 1992,
+    "tags": [
+      "folk",
+      "southern",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Change",
+        "artist": "Blind Melon",
+        "album": "Blind Melon",
+        "year": 1992
+      },
+      {
+        "title": "Tones of Home",
+        "artist": "Blind Melon",
+        "album": "Blind Melon",
+        "year": 1992
+      },
+      {
+        "title": "Sleepyhouse",
+        "artist": "Blind Melon",
+        "album": "Blind Melon",
+        "year": 1992
+      }
+    ]
+  },
+  {
+    "id": "august",
+    "artist": "Counting Crows",
+    "title": "August and Everything After",
+    "year": 1993,
+    "tags": [
+      "folk",
+      "melodic",
+      "southern"
+    ],
+    "tracks": [
+      {
+        "title": "Anna Begins",
+        "artist": "Counting Crows",
+        "album": "August and Everything After",
+        "year": 1993
+      },
+      {
+        "title": "Sullivan Street",
+        "artist": "Counting Crows",
+        "album": "August and Everything After",
+        "year": 1993
+      },
+      {
+        "title": "A Murder of One",
+        "artist": "Counting Crows",
+        "album": "August and Everything After",
+        "year": 1993
+      }
+    ]
+  },
+  {
+    "id": "gin-blossoms",
+    "artist": "Gin Blossoms",
+    "title": "New Miserable Experience",
+    "year": 1992,
+    "tags": [
+      "jangle",
+      "melodic",
+      "southern"
+    ],
+    "tracks": [
+      {
+        "title": "Lost Horizons",
+        "artist": "Gin Blossoms",
+        "album": "New Miserable Experience",
+        "year": 1992
+      },
+      {
+        "title": "Until I Fall Away",
+        "artist": "Gin Blossoms",
+        "album": "New Miserable Experience",
+        "year": 1992
+      },
+      {
+        "title": "Found Out About You",
+        "artist": "Gin Blossoms",
+        "album": "New Miserable Experience",
+        "year": 1992
+      }
+    ]
+  },
+  {
+    "id": "sister-sweetly",
+    "artist": "Big Head Todd and the Monsters",
+    "title": "Sister Sweetly",
+    "year": 1993,
+    "tags": [
+      "blues",
+      "southern",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Bittersweet",
+        "artist": "Big Head Todd and the Monsters",
+        "album": "Sister Sweetly",
+        "year": 1993
+      },
+      {
+        "title": "Circle",
+        "artist": "Big Head Todd and the Monsters",
+        "album": "Sister Sweetly",
+        "year": 1993
+      },
+      {
+        "title": "Broken Hearted Savior",
+        "artist": "Big Head Todd and the Monsters",
+        "album": "Sister Sweetly",
+        "year": 1993
+      }
+    ]
+  },
+  {
+    "id": "lemonheads",
+    "artist": "The Lemonheads",
+    "title": "It’s a Shame About Ray",
+    "year": 1992,
+    "tags": [
+      "jangle",
+      "folk",
+      "punk"
+    ],
+    "tracks": [
+      {
+        "title": "Confetti",
+        "artist": "The Lemonheads",
+        "album": "It’s a Shame About Ray",
+        "year": 1992
+      },
+      {
+        "title": "My Drug Buddy",
+        "artist": "The Lemonheads",
+        "album": "It’s a Shame About Ray",
+        "year": 1992
+      },
+      {
+        "title": "Rudderless",
+        "artist": "The Lemonheads",
+        "album": "It’s a Shame About Ray",
+        "year": 1992
+      }
+    ]
+  },
+  {
+    "id": "maniacs",
+    "artist": "10,000 Maniacs",
+    "title": "In My Tribe",
+    "year": 1987,
+    "tags": [
+      "jangle",
+      "folk",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Don’t Talk",
+        "artist": "10,000 Maniacs",
+        "album": "In My Tribe",
+        "year": 1987
+      },
+      {
+        "title": "Like the Weather",
+        "artist": "10,000 Maniacs",
+        "album": "In My Tribe",
+        "year": 1987
+      },
+      {
+        "title": "What’s the Matter Here?",
+        "artist": "10,000 Maniacs",
+        "album": "In My Tribe",
+        "year": 1987
+      }
+    ]
+  },
+  {
+    "id": "indigo",
+    "artist": "Indigo Girls",
+    "title": "Indigo Girls",
+    "year": 1989,
+    "tags": [
+      "folk",
+      "harmonies",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Closer to Fine",
+        "artist": "Indigo Girls",
+        "album": "Indigo Girls",
+        "year": 1989
+      },
+      {
+        "title": "Kid Fears",
+        "artist": "Indigo Girls",
+        "album": "Indigo Girls",
+        "year": 1989
+      },
+      {
+        "title": "Prince of Darkness",
+        "artist": "Indigo Girls",
+        "album": "Indigo Girls",
+        "year": 1989
+      }
+    ]
+  },
+  {
+    "id": "soul-asylum",
+    "artist": "Soul Asylum",
+    "title": "Grave Dancers Union",
+    "year": 1992,
+    "tags": [
+      "melodic",
+      "heavy",
+      "jangle"
+    ],
+    "tracks": [
+      {
+        "title": "Somebody to Shove",
+        "artist": "Soul Asylum",
+        "album": "Grave Dancers Union",
+        "year": 1992
+      },
+      {
+        "title": "Black Gold",
+        "artist": "Soul Asylum",
+        "album": "Grave Dancers Union",
+        "year": 1992
+      },
+      {
+        "title": "Runaway Train",
+        "artist": "Soul Asylum",
+        "album": "Grave Dancers Union",
+        "year": 1992
+      }
+    ]
+  },
+  {
+    "id": "jump",
+    "artist": "Jump, Little Children",
+    "title": "The Licorice Tea Demos",
+    "year": 1995,
+    "tags": [
+      "folk",
+      "southern",
+      "jangle"
+    ],
+    "tracks": [
+      {
+        "title": "Quiet",
+        "artist": "Jump, Little Children",
+        "album": "The Licorice Tea Demos",
+        "year": 1995
+      },
+      {
+        "title": "Dancing Virginia",
+        "artist": "Jump, Little Children",
+        "album": "The Licorice Tea Demos",
+        "year": 1995
+      },
+      {
+        "title": "Smiling Down",
+        "artist": "Jump, Little Children",
+        "album": "The Licorice Tea Demos",
+        "year": 1995
+      }
+    ]
+  },
+  {
+    "id": "violent-femmes",
+    "artist": "Violent Femmes",
+    "title": "Violent Femmes",
+    "year": 1983,
+    "tags": [
+      "folk",
+      "punk",
+      "jangle"
+    ],
+    "tracks": [
+      {
+        "title": "Blister in the Sun",
+        "artist": "Violent Femmes",
+        "album": "Violent Femmes",
+        "year": 1983
+      },
+      {
+        "title": "Kiss Off",
+        "artist": "Violent Femmes",
+        "album": "Violent Femmes",
+        "year": 1983
+      },
+      {
+        "title": "Add It Up",
+        "artist": "Violent Femmes",
+        "album": "Violent Femmes",
+        "year": 1983
+      }
+    ]
+  },
+  {
+    "id": "sundays",
+    "artist": "The Sundays",
+    "title": "Reading, Writing and Arithmetic",
+    "year": 1990,
+    "tags": [
+      "jangle",
+      "folk",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Here’s Where the Story Ends",
+        "artist": "The Sundays",
+        "album": "Reading, Writing and Arithmetic",
+        "year": 1990
+      },
+      {
+        "title": "Can’t Be Sure",
+        "artist": "The Sundays",
+        "album": "Reading, Writing and Arithmetic",
+        "year": 1990
+      },
+      {
+        "title": "You’re Not the Only One I Know",
+        "artist": "The Sundays",
+        "album": "Reading, Writing and Arithmetic",
+        "year": 1990
+      }
+    ]
+  },
+  {
+    "id": "church",
+    "artist": "The Church",
+    "title": "Starfish",
+    "year": 1988,
+    "tags": [
+      "jangle",
+      "psychedelic",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Under the Milky Way",
+        "artist": "The Church",
+        "album": "Starfish",
+        "year": 1988
+      },
+      {
+        "title": "Reptile",
+        "artist": "The Church",
+        "album": "Starfish",
+        "year": 1988
+      },
+      {
+        "title": "North, South, East and West",
+        "artist": "The Church",
+        "album": "Starfish",
+        "year": 1988
+      }
+    ]
+  },
+  {
+    "id": "replacements",
+    "artist": "The Replacements",
+    "title": "Pleased to Meet Me",
+    "year": 1987,
+    "tags": [
+      "jangle",
+      "punk",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Can’t Hardly Wait",
+        "artist": "The Replacements",
+        "album": "Pleased to Meet Me",
+        "year": 1987
+      },
+      {
+        "title": "Alex Chilton",
+        "artist": "The Replacements",
+        "album": "Pleased to Meet Me",
+        "year": 1987
+      },
+      {
+        "title": "Skyway",
+        "artist": "The Replacements",
+        "album": "Pleased to Meet Me",
+        "year": 1987
+      }
+    ]
+  },
+  {
+    "id": "dinosaur",
+    "artist": "Dinosaur Jr.",
+    "title": "Where You Been",
+    "year": 1993,
+    "tags": [
+      "heavy",
+      "indie",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Start Choppin",
+        "artist": "Dinosaur Jr.",
+        "album": "Where You Been",
+        "year": 1993
+      },
+      {
+        "title": "Out There",
+        "artist": "Dinosaur Jr.",
+        "album": "Where You Been",
+        "year": 1993
+      },
+      {
+        "title": "Goin Home",
+        "artist": "Dinosaur Jr.",
+        "album": "Where You Been",
+        "year": 1993
+      }
+    ]
+  },
+  {
+    "id": "pavement",
+    "artist": "Pavement",
+    "title": "Crooked Rain, Crooked Rain",
+    "year": 1994,
+    "tags": [
+      "indie",
+      "jangle",
+      "punk"
+    ],
+    "tracks": [
+      {
+        "title": "Cut Your Hair",
+        "artist": "Pavement",
+        "album": "Crooked Rain, Crooked Rain",
+        "year": 1994
+      },
+      {
+        "title": "Gold Soundz",
+        "artist": "Pavement",
+        "album": "Crooked Rain, Crooked Rain",
+        "year": 1994
+      },
+      {
+        "title": "Range Life",
+        "artist": "Pavement",
+        "album": "Crooked Rain, Crooked Rain",
+        "year": 1994
+      }
+    ]
+  },
+  {
+    "id": "superchunk",
+    "artist": "Superchunk",
+    "title": "Foolish",
+    "year": 1994,
+    "tags": [
+      "indie",
+      "punk",
+      "southern"
+    ],
+    "tracks": [
+      {
+        "title": "Driveway to Driveway",
+        "artist": "Superchunk",
+        "album": "Foolish",
+        "year": 1994
+      },
+      {
+        "title": "Like a Fool",
+        "artist": "Superchunk",
+        "album": "Foolish",
+        "year": 1994
+      },
+      {
+        "title": "Water Wings",
+        "artist": "Superchunk",
+        "album": "Foolish",
+        "year": 1994
+      }
+    ]
+  },
+  {
+    "id": "jayhawks",
+    "artist": "The Jayhawks",
+    "title": "Tomorrow the Green Grass",
+    "year": 1995,
+    "tags": [
+      "folk",
+      "harmonies",
+      "southern"
+    ],
+    "tracks": [
+      {
+        "title": "Blue",
+        "artist": "The Jayhawks",
+        "album": "Tomorrow the Green Grass",
+        "year": 1995
+      },
+      {
+        "title": "I’d Run Away",
+        "artist": "The Jayhawks",
+        "album": "Tomorrow the Green Grass",
+        "year": 1995
+      },
+      {
+        "title": "Miss Williams’ Guitar",
+        "artist": "The Jayhawks",
+        "album": "Tomorrow the Green Grass",
+        "year": 1995
+      }
+    ]
+  },
+  {
+    "id": "rem",
+    "artist": "R.E.M.",
+    "title": "Green",
+    "year": 1988,
+    "tags": [
+      "jangle",
+      "southern",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Orange Crush",
+        "artist": "R.E.M.",
+        "album": "Green",
+        "year": 1988
+      },
+      {
+        "title": "You Are the Everything",
+        "artist": "R.E.M.",
+        "album": "Green",
+        "year": 1988
+      },
+      {
+        "title": "World Leader Pretend",
+        "artist": "R.E.M.",
+        "album": "Green",
+        "year": 1988
+      }
+    ]
+  },
+  {
+    "id": "u2",
+    "artist": "U2",
+    "title": "The Joshua Tree",
+    "year": 1987,
+    "tags": [
+      "melodic",
+      "atmospheric",
+      "rock"
+    ],
+    "tracks": [
+      {
+        "title": "Where the Streets Have No Name",
+        "artist": "U2",
+        "album": "The Joshua Tree",
+        "year": 1987
+      },
+      {
+        "title": "Running to Stand Still",
+        "artist": "U2",
+        "album": "The Joshua Tree",
+        "year": 1987
+      },
+      {
+        "title": "One Tree Hill",
+        "artist": "U2",
+        "album": "The Joshua Tree",
+        "year": 1987
+      }
+    ]
+  },
+  {
+    "id": "soundgarden",
+    "artist": "Soundgarden",
+    "title": "Badmotorfinger",
+    "year": 1991,
+    "tags": [
+      "heavy",
+      "grunge",
+      "psychedelic"
+    ],
+    "tracks": [
+      {
+        "title": "Outshined",
+        "artist": "Soundgarden",
+        "album": "Badmotorfinger",
+        "year": 1991
+      },
+      {
+        "title": "Rusty Cage",
+        "artist": "Soundgarden",
+        "album": "Badmotorfinger",
+        "year": 1991
+      },
+      {
+        "title": "Slaves & Bulldozers",
+        "artist": "Soundgarden",
+        "album": "Badmotorfinger",
+        "year": 1991
+      }
+    ]
+  },
+  {
+    "id": "eagles",
+    "artist": "Eagles",
+    "title": "Their Greatest Hits 1971–1975",
+    "year": 1976,
+    "tags": [
+      "harmonies",
+      "folk",
+      "southern"
+    ],
+    "tracks": [
+      {
+        "title": "Take It Easy",
+        "artist": "Eagles",
+        "album": "Their Greatest Hits 1971–1975",
+        "year": 1976
+      },
+      {
+        "title": "Lyin’ Eyes",
+        "artist": "Eagles",
+        "album": "Their Greatest Hits 1971–1975",
+        "year": 1976
+      },
+      {
+        "title": "Take It to the Limit",
+        "artist": "Eagles",
+        "album": "Their Greatest Hits 1971–1975",
+        "year": 1976
+      }
+    ]
+  },
+  {
+    "id": "kenny",
+    "artist": "Kenny Rogers",
+    "title": "Greatest Hits",
+    "year": 1980,
+    "tags": [
+      "country",
+      "folk",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "The Gambler",
+        "artist": "Kenny Rogers",
+        "album": "Greatest Hits",
+        "year": 1980
+      },
+      {
+        "title": "Lady",
+        "artist": "Kenny Rogers",
+        "album": "Greatest Hits",
+        "year": 1980
+      },
+      {
+        "title": "Lucille",
+        "artist": "Kenny Rogers",
+        "album": "Greatest Hits",
+        "year": 1980
+      }
+    ]
+  },
+  {
+    "id": "simon",
+    "artist": "Simon & Garfunkel",
+    "title": "Bridge Over Troubled Water",
+    "year": 1970,
+    "tags": [
+      "folk",
+      "harmonies",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "The Boxer",
+        "artist": "Simon & Garfunkel",
+        "album": "Bridge Over Troubled Water",
+        "year": 1970
+      },
+      {
+        "title": "The Only Living Boy in New York",
+        "artist": "Simon & Garfunkel",
+        "album": "Bridge Over Troubled Water",
+        "year": 1970
+      },
+      {
+        "title": "Cecilia",
+        "artist": "Simon & Garfunkel",
+        "album": "Bridge Over Troubled Water",
+        "year": 1970
+      }
+    ]
+  },
+  {
+    "id": "fourtops",
+    "artist": "Four Tops",
+    "title": "Reach Out",
+    "year": 1967,
+    "tags": [
+      "soul",
+      "harmonies",
+      "melodic"
+    ],
+    "tracks": [
+      {
+        "title": "Reach Out I’ll Be There",
+        "artist": "Four Tops",
+        "album": "Reach Out",
+        "year": 1967
+      },
+      {
+        "title": "Bernadette",
+        "artist": "Four Tops",
+        "album": "Reach Out",
+        "year": 1967
+      },
+      {
+        "title": "Standing in the Shadows of Love",
+        "artist": "Four Tops",
+        "album": "Reach Out",
+        "year": 1967
+      }
+    ]
+  },
+  {
+    "id": "orbison",
+    "artist": "Roy Orbison",
+    "title": "Mystery Girl",
+    "year": 1989,
+    "tags": [
+      "melodic",
+      "rock",
+      "harmonies"
+    ],
+    "tracks": [
+      {
+        "title": "You Got It",
+        "artist": "Roy Orbison",
+        "album": "Mystery Girl",
+        "year": 1989
+      },
+      {
+        "title": "She’s a Mystery to Me",
+        "artist": "Roy Orbison",
+        "album": "Mystery Girl",
+        "year": 1989
+      },
+      {
+        "title": "California Blue",
+        "artist": "Roy Orbison",
+        "album": "Mystery Girl",
+        "year": 1989
+      }
+    ]
+  },
+  {
+    "id": "zeppelin",
+    "artist": "Led Zeppelin",
+    "title": "Led Zeppelin IV",
+    "year": 1971,
+    "tags": [
+      "heavy",
+      "blues",
+      "folk"
+    ],
+    "tracks": [
+      {
+        "title": "Black Dog",
+        "artist": "Led Zeppelin",
+        "album": "Led Zeppelin IV",
+        "year": 1971
+      },
+      {
+        "title": "Going to California",
+        "artist": "Led Zeppelin",
+        "album": "Led Zeppelin IV",
+        "year": 1971
+      },
+      {
+        "title": "When the Levee Breaks",
+        "artist": "Led Zeppelin",
+        "album": "Led Zeppelin IV",
+        "year": 1971
+      }
+    ]
+  },
+  {
+    "id": "stones",
+    "artist": "The Rolling Stones",
+    "title": "Sticky Fingers",
+    "year": 1971,
+    "tags": [
+      "blues",
+      "southern",
+      "rock"
+    ],
+    "tracks": [
+      {
+        "title": "Wild Horses",
+        "artist": "The Rolling Stones",
+        "album": "Sticky Fingers",
+        "year": 1971
+      },
+      {
+        "title": "Can’t You Hear Me Knocking",
+        "artist": "The Rolling Stones",
+        "album": "Sticky Fingers",
+        "year": 1971
+      },
+      {
+        "title": "Moonlight Mile",
+        "artist": "The Rolling Stones",
+        "album": "Sticky Fingers",
+        "year": 1971
+      }
+    ]
+  },
+  {
+    "id": "croce",
+    "artist": "Jim Croce",
+    "title": "You Don’t Mess Around with Jim",
+    "year": 1972,
+    "tags": [
+      "folk",
+      "melodic",
+      "country"
+    ],
+    "tracks": [
+      {
+        "title": "Operator (That’s Not the Way It Feels)",
+        "artist": "Jim Croce",
+        "album": "You Don’t Mess Around with Jim",
+        "year": 1972
+      },
+      {
+        "title": "Time in a Bottle",
+        "artist": "Jim Croce",
+        "album": "You Don’t Mess Around with Jim",
+        "year": 1972
+      },
+      {
+        "title": "You Don’t Mess Around with Jim",
+        "artist": "Jim Croce",
+        "album": "You Don’t Mess Around with Jim",
+        "year": 1972
+      }
+    ]
+  },
+  {
+    "id": "catstevens",
+    "artist": "Cat Stevens",
+    "title": "Tea for the Tillerman",
+    "year": 1970,
+    "tags": [
+      "folk",
+      "melodic",
+      "harmonies"
+    ],
+    "tracks": [
+      {
+        "title": "Wild World",
+        "artist": "Cat Stevens",
+        "album": "Tea for the Tillerman",
+        "year": 1970
+      },
+      {
+        "title": "Father and Son",
+        "artist": "Cat Stevens",
+        "album": "Tea for the Tillerman",
+        "year": 1970
+      },
+      {
+        "title": "Where Do the Children Play?",
+        "artist": "Cat Stevens",
+        "album": "Tea for the Tillerman",
+        "year": 1970
+      }
+    ]
+  },
+  {
+    "id": "samcooke",
+    "artist": "Sam Cooke",
+    "title": "The Best of Sam Cooke",
+    "year": 1962,
+    "tags": [
+      "soul",
+      "melodic",
+      "harmonies"
+    ],
+    "tracks": [
+      {
+        "title": "You Send Me",
+        "artist": "Sam Cooke",
+        "album": "The Best of Sam Cooke",
+        "year": 1962
+      },
+      {
+        "title": "Wonderful World",
+        "artist": "Sam Cooke",
+        "album": "The Best of Sam Cooke",
+        "year": 1962
+      },
+      {
+        "title": "Chain Gang",
+        "artist": "Sam Cooke",
+        "album": "The Best of Sam Cooke",
+        "year": 1962
+      }
+    ]
+  },
+  {
+    "id": "fleetwood",
+    "artist": "Fleetwood Mac",
+    "title": "Rumours",
+    "year": 1977,
+    "tags": [
+      "harmonies",
+      "melodic",
+      "rock"
+    ],
+    "tracks": [
+      {
+        "title": "Dreams",
+        "artist": "Fleetwood Mac",
+        "album": "Rumours",
+        "year": 1977
+      },
+      {
+        "title": "Never Going Back Again",
+        "artist": "Fleetwood Mac",
+        "album": "Rumours",
+        "year": 1977
+      },
+      {
+        "title": "The Chain",
+        "artist": "Fleetwood Mac",
+        "album": "Rumours",
+        "year": 1977
+      }
+    ]
+  }
+]
