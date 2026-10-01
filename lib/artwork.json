@@ -1,0 +1,62 @@
+{
+  "fear": {
+    "path": "/art/fear.jpg",
+    "source": "https://music.apple.com/us/album/fear/193524736"
+  },
+  "fun-games": {
+    "path": "/art/fun-games.jpg",
+    "source": "https://concord.com/concord-albums/fun-games/"
+  },
+  "one-simple-word": {
+    "path": "/art/one-simple-word.jpg",
+    "source": "https://concord.com/concord-albums/one-simple-word/"
+  },
+  "ten": {
+    "path": "/art/ten.jpg",
+    "source": "https://music.apple.com/us/album/ten/425465247"
+  },
+  "blind-melon": {
+    "path": "/art/blind-melon.jpg",
+    "source": "https://www.musicmaniarecords.be/4462-blind-melon/9378-blind-melon/"
+  },
+  "august": {
+    "path": "/art/august-and-everything-after.avif",
+    "source": "https://www.countingcrows.com/album/august-and-everything-after"
+  },
+  "gin-blossoms": {
+    "path": "/art/new-miserable-experience.jpg",
+    "source": "https://music.apple.com/us/album/new-miserable-experience/1440749157"
+  },
+  "sundays": {
+    "path": "/art/reading-writing-arithmetic.jpg",
+    "source": "https://music.apple.com/us/album/reading-writing-and-arithmetic/1707465605"
+  },
+  "church": {
+    "path": "/art/starfish.jpg",
+    "source": "https://music.apple.com/us/album/starfish/303081979"
+  },
+  "replacements": {
+    "path": "/art/pleased-to-meet-me.jpg",
+    "source": "https://music.apple.com/us/album/pleased-to-meet-me-super-deluxe-edition-2020-remaster/1522898182"
+  },
+  "dinosaur": {
+    "path": "/art/where-you-been.jpg",
+    "source": "https://music.apple.com/us/album/where-you-been/1765551992"
+  },
+  "pavement": {
+    "path": "/art/crooked-rain.jpg",
+    "source": "https://music.apple.com/us/album/crooked-rain-crooked-rain/1589187959"
+  },
+  "superchunk": {
+    "path": "/art/foolish.jpg",
+    "source": "https://music.apple.com/us/album/foolish/1839072345"
+  },
+  "jayhawks": {
+    "path": "/art/tomorrow-green-grass.jpg",
+    "source": "https://music.apple.com/us/album/tomorrow-the-green-grass/1440928275"
+  },
+  "sister-sweetly": {
+    "path": "/art/sister-sweetly.jpg",
+    "source": "https://music.apple.com/us/album/sister-sweetly/343404533"
+  }
+}
