@@ -1,7 +1,7 @@
 // Wow and Flutter: the Electron shell. Opens full screen (its own Space on the
 // Mac, so you can swipe to it and away), keeps itself current from GitHub
 // releases the way NEO does, and hands a few facts to the page.
-const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, shell, clipboard } = require('electron');
 const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -102,9 +102,9 @@ if application "Spotify" is running then
 else
   return "notrunning"
 end if`;
-function osa(script) {
+function osa(script, timeout = 5000) {
   return new Promise((resolve, reject) => {
-    execFile('/usr/bin/osascript', ['-e', script], { timeout: 5000 }, (err, out, errout) => err ? reject(new Error((errout || err.message).trim())) : resolve(String(out).trim()));
+    execFile('/usr/bin/osascript', ['-e', script], { timeout }, (err, out, errout) => err ? reject(new Error((errout || err.message).trim())) : resolve(String(out).trim()));
   });
 }
 const num = (s) => Number(String(s).replace(',', '.')) || 0;
@@ -124,9 +124,49 @@ ipcMain.handle('wf:spotify', async (_e, cmd, arg) => {
       case 'previous': await osa('tell application "Spotify" to previous track'); return { ok: true };
       case 'seek': await osa(`tell application "Spotify" to set player position to ${num(arg)}`); return { ok: true };
       case 'play': {
-        if (arg == null) { await osa('tell application "Spotify" to play'); return { ok: true }; }
+        if (arg == null) {
+          await osa('if application "Spotify" is not running then\n tell application "Spotify" to launch\n delay 3\nend if\ntell application "Spotify" to play', 12000);
+          return { ok: true };
+        }
         if (!/^spotify:(track|album|playlist|artist):[A-Za-z0-9]+$/.test(String(arg))) return { error: 'Not a Spotify link.' };
         await osa(`tell application "Spotify" to play track "${arg}"`); return { ok: true };
+      }
+      case 'connect': {   // opens Spotify if needed and says hello to it, which is what makes macOS ask for permission
+        await osa('tell application "Spotify" to launch', 10000);
+        await osa('tell application "Spotify" to get player state as string', 10000);
+        return { ok: true };
+      }
+      case 'volume': {
+        const v = Math.max(0, Math.min(100, Math.round(num(arg))));
+        await osa(`tell application "Spotify" to set sound volume to ${v}`); return { ok: true };
+      }
+      case 'station': {   // tune in like a radio: shuffled, and already in the middle of a song
+        if (!/^spotify:(playlist|album|artist):[A-Za-z0-9]+$/.test(String(arg))) return { error: 'Not a Spotify playlist, album or artist link.' };
+        await osa(`if application "Spotify" is not running then
+  tell application "Spotify" to launch
+  delay 3
+end if
+tell application "Spotify"
+  set shuffling to true
+  play track "${arg}"
+  delay 1.5
+  try
+    next track
+    delay 1.2
+  end try
+  try
+    set d to (duration of current track) / 1000
+    set player position to d * (0.12 + ((random number from 0 to 60) / 100))
+  end try
+end tell`, 20000);
+        return { ok: true };
+      }
+      case 'clipboard': return { text: clipboard.readText() };
+      case 'oembed': {
+        try {
+          const r = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(String(arg)));
+          const j = await r.json(); return { title: j.title || '' };
+        } catch (e) { return { title: '' }; }
       }
       default: return { error: 'Unknown command.' };
     }

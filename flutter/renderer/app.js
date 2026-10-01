@@ -172,10 +172,11 @@ function tune(f, fromKnob) {
   $('#needle').style.left = (14 + (band - 88) / 20 * (w - 28)) + 'px';
   const s = nearest(), dist = Math.abs(s.f - band), lock = dist < 0.35;
   $('#tfreq').textContent = 'FM ' + band.toFixed(1);
-  $('#tname').textContent = lock ? `${s.n} · ${s.g}` : dist < 1.2 ? '~ ~ ~ static' : 'scanning…';
+  $('#tname').textContent = lock ? `${(game.names && game.names[s.f.toFixed(1)]) || s.n} · ${s.g}` : dist < 1.2 ? '~ ~ ~ static' : 'scanning…';
   if (noise) noise.gain.value = powered ? (lock ? 0 : Math.min(0.16, dist * 0.09)) * (0.2 + vol) : 0;
   if (tuneKnob && !fromKnob) tuneKnob.set((band - 88) / 20, false);
   renderPresets();
+  if (typeof onTuned === 'function') onTuned(band, lock, s);
 }
 function renderPresets() {
   ['#presets1', '#presets2'].forEach(s => { $(s).innerHTML = ''; });
@@ -291,7 +292,7 @@ let src = 'TUNER';
   $('#inputs').appendChild(b);
 });
 makeKnob($('#bass')); makeKnob($('#treble')); makeKnob($('#balance'));
-const volKnob = makeKnob($('#vol'), { value: vol, onChange: v => { vol = v; $('#avol').textContent = 'Volume −' + Math.round((1 - v) * 60) + ' dB'; tune(band); } });
+const volKnob = makeKnob($('#vol'), { value: vol, onChange: v => { vol = v; $('#avol').textContent = 'Volume −' + Math.round((1 - v) * 60) + ' dB'; tune(band); if (typeof onVolume === 'function') onVolume(v); } });
 $('#avol').textContent = 'Volume −' + Math.round((1 - vol) * 60) + ' dB';
 $('#loud').addEventListener('click', e => { loud = !loud; e.currentTarget.classList.toggle('on', loud); note(loud ? 'Loudness on: leans harder on what you already love.' : 'Loudness off.'); });
 $('#pure').addEventListener('click', e => { pure = !pure; e.currentTarget.classList.toggle('on', pure); note(pure ? 'Pure direct: no personalization. The era, as it was.' : 'Pure direct off.'); });
