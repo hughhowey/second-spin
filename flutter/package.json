@@ -1,0 +1,67 @@
+{
+  "name": "wow-and-flutter",
+  "productName": "Wow and Flutter",
+  "version": "0.1.0",
+  "description": "W&F: a stereo stack for remembering the albums you forgot.",
+  "homepage": "https://github.com/hughhowey/second-spin",
+  "author": "Hugh Howey <hughhowey@gmail.com>",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.hughhowey.wowandflutter",
+    "productName": "Wow and Flutter",
+    "publish": {
+      "provider": "github",
+      "owner": "hughhowey",
+      "repo": "second-spin"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "category": "public.app-category.music",
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "notarize": true,
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Wow and Flutter plays and controls music in the Spotify app on your Mac."
+      }
+    },
+    "artifactName": "wow-and-flutter-${version}-${arch}.${ext}"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
+  }
+}

@@ -1,0 +1,77 @@
+# Builds Wow and Flutter (the Mac app in /flutter) on a GitHub Mac, signs and
+# notarizes it with the same Apple secrets NEO uses, and publishes a release.
+# The app checks that release on open and every four hours.
+#
+# Every push that changes /flutter makes a new version: 0.1.<run number>.
+# Without the Apple secrets the build still runs but is unsigned, which is
+# fine for a first look, and cannot update itself.
+
+name: Build Wow and Flutter
+
+on:
+  push:
+    branches: [main, claude/sweet-bohr-4lcu5b]
+    paths: ['flutter/**', '.github/workflows/flutter.yml']
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  mac:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: flutter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Set the version
+        run: npm version "0.1.${{ github.run_number }}" --no-git-tag-version
+      - run: npm install
+      - name: Import signing certificate
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+        run: |
+          if [ -z "$CSC_LINK" ]; then echo "SIGNED=no" >> "$GITHUB_ENV"; echo "::warning::No CSC_LINK secret. Building unsigned."; exit 0; fi
+          echo "SIGNED=yes" >> "$GITHUB_ENV"
+          KEYCHAIN="$RUNNER_TEMP/wf-build.keychain-db"
+          KEYCHAIN_PWD="$(uuidgen)"
+          echo "$CSC_LINK" | base64 --decode > "$RUNNER_TEMP/wf-cert.p12"
+          security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
+          security import "$RUNNER_TEMP/wf-cert.p12" -k "$KEYCHAIN" -P "$CSC_KEY_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S "apple-tool:,apple:,codesign:" -s -k "$KEYCHAIN_PWD" "$KEYCHAIN" > /dev/null
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain-db
+          rm "$RUNNER_TEMP/wf-cert.p12"
+      - name: Build
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ "$SIGNED" = "yes" ]; then
+            npx electron-builder --mac --publish never
+          else
+            CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --publish never -c.mac.identity=null -c.mac.notarize=false
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac-build
+          path: |
+            flutter/dist/*.dmg
+            flutter/dist/*-mac.zip
+            flutter/dist/latest-mac.yml
+            flutter/dist/*.blockmap
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v0.1.${{ github.run_number }}"
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "Wow and Flutter $TAG" \
+            --notes "Built from commit ${GITHUB_SHA::7}. Signed: $SIGNED." \
+            dist/*.dmg dist/*-mac.zip dist/latest-mac.yml dist/*.blockmap
